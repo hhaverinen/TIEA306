@@ -1,3 +1,10 @@
+# output folder
+DatabaseClient/out/*
+
+# workspace settings
+DatabaseClient/.idea/copyright/*
+DatabaseClient/.idea/workspace.xml
+
 *.class
 
 # Mobile Tools for Java (J2ME)
