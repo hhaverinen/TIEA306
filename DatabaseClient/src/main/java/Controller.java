@@ -43,9 +43,21 @@ public class Controller {
     @FXML
     protected void runQuery(ActionEvent event) {
         try {
+            String query = queryArea.getText();
+
             DatabaseHelper databaseHelper = new DatabaseHelper("jdbc:mysql://192.168.1.254/mock_base", "dbuser", "passw0rd");
-            ResultSet resultSet = databaseHelper.executeQuery(queryArea.getText());
-            buildTableData(resultSet);
+            ResultSet resultSet = null;
+            int affectedRows = 0;
+            if (query.split(" ")[0].equalsIgnoreCase("select")) {
+                resultSet = databaseHelper.executeQuery(query);
+            } else {
+                affectedRows = databaseHelper.executeUpdate(query);
+            }
+            if (resultSet != null) {
+                buildTableData(resultSet);
+            } else {
+                log.setText(String.format("Query completed succesfully. %s rows affected.", affectedRows));
+            }
             databaseHelper.getConnection().close();
             databaseHelper.getStatement().close();
         } catch (Exception e) {

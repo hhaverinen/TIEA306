@@ -32,7 +32,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/main/resources/base.fxml"));
         primaryStage.setTitle("DatabaseClient");
-        primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.setScene(new Scene(root, 800, 500));
         primaryStage.show();
     }
 
