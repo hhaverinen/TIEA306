@@ -22,10 +22,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.util.Callback;
 
 import java.sql.ResultSet;
@@ -39,9 +36,9 @@ public class Controller {
     @FXML
     private TextArea queryArea;
     @FXML
-    private TableView resultArea;
-    @FXML
     private TextArea log;
+    @FXML
+    TabPane resultsTabPane;
 
     @FXML
     protected void runQuery(ActionEvent event) {
@@ -64,10 +61,10 @@ public class Controller {
 
     private void buildTableData(ResultSet resultSet) {
         ObservableList<ObservableList> observableList = FXCollections.observableArrayList();
-
+        TableView tableView = new TableView();
         try {
             // clear old columns and add new ones
-            resultArea.getColumns().clear();
+            tableView.getColumns().clear();
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
             for (int i = 0; i < resultSetMetaData.getColumnCount(); i++) {
                 final int j = i;
@@ -78,7 +75,7 @@ public class Controller {
                     }
                 });
 
-                resultArea.getColumns().add(tableColumn);
+                tableView.getColumns().add(tableColumn);
             }
 
             // add data to columns
@@ -90,7 +87,14 @@ public class Controller {
                 observableList.add(row);
             }
 
-            resultArea.setItems(observableList);
+            tableView.setItems(observableList);
+
+            // add table to new tab and select it
+            Tab tab = new Tab("Resultset " + (resultsTabPane.getTabs().size() + 1));
+            tab.setContent(tableView);
+            resultsTabPane.getTabs().add(tab);
+            resultsTabPane.getSelectionModel().select(tab);
+
             String resultText = String.format("Query returned %s results.", observableList.size());
             log.setText(resultText);
         } catch (SQLException e) {
