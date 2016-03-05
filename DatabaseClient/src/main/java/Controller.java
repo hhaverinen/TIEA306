@@ -25,22 +25,27 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.List;
 
 /**
  * Created by Henri on 4.3.2016.
  */
 public class Controller {
     @FXML
-    private TextArea queryArea;
+    private TextArea queryArea, log;
     @FXML
-    private TextArea log;
+    private TextField databaseUrl, databaseUser, databasePassword;
     @FXML
-    TabPane resultsTabPane;
+    private TabPane resultsTabPane;
+    @FXML
+    private AnchorPane metadataPane;
+
+    protected DatabaseHelper databaseHelper;
 
     @FXML
     protected void queryAreaOnKeyPress(KeyEvent event) {
@@ -53,8 +58,6 @@ public class Controller {
     protected void runQuery(ActionEvent event) {
         try {
             String query = queryArea.getText();
-
-            DatabaseHelper databaseHelper = new DatabaseHelper("jdbc:mysql://192.168.1.254/mock_base", "dbuser", "passw0rd");
             ResultSet resultSet = null;
             int affectedRows = 0;
             if (query.split(" ")[0].equalsIgnoreCase("select")) {
@@ -65,9 +68,8 @@ public class Controller {
             if (resultSet != null) {
                 buildTableData(resultSet);
             } else {
-                log.setText(String.format("Query completed succesfully. %s rows affected.", affectedRows));
+                log.setText(String.format("Query completed successfully. %s rows affected.", affectedRows));
             }
-            databaseHelper.getConnection().close();
             databaseHelper.getStatement().close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,9 +77,47 @@ public class Controller {
         }
     }
 
+
     @FXML
-    protected void clearQuery(ActionEvent event) {
-        queryArea.clear();
+    protected void connect(ActionEvent event) {
+        String url = databaseUrl.getText();
+        String user = databaseUser.getText();
+        String password = databasePassword.getText();
+
+        try {
+            databaseHelper = new DatabaseHelper(url, user, password);
+            log.setText("Successfully connected to " + url);
+            buildDatabaseMetaData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.setText(e.getMessage());
+        }
+    }
+
+    private void buildDatabaseMetaData() {
+        try {
+            DatabaseMetaData databaseMetaData = databaseHelper.getConnection().getMetaData();
+            ResultSet tables = databaseMetaData.getTables(null,null,null,null);
+            VBox vBox = new VBox();
+            while (tables.next()) {
+                String tableName = tables.getString(3);
+                TreeItem<String> table = new TreeItem<>(tableName);
+
+                ResultSet columns = databaseMetaData.getColumns(null,null,tableName,null);
+                while(columns.next()){
+                    String columnData = columns.getString(4) + " - " + databaseHelper.getSqlTypeName(columns.getInt(5));
+                    TreeItem<String> column = new TreeItem<>(columnData);
+                    table.getChildren().add(column);
+                }
+
+                TreeView<String> treeView = new TreeView<>(table);
+                vBox.getChildren().add(treeView);
+            }
+            metadataPane.getChildren().add(vBox);
+        } catch (SQLException e){
+            e.printStackTrace();
+            log.setText(e.getMessage());
+        }
     }
 
     private void buildTableData(ResultSet resultSet) {

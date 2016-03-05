@@ -28,14 +28,28 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
+    private Controller controller;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/main/resources/base.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        Parent root = loader.load(getClass().getResource("/main/resources/base.fxml").openStream());
+        controller = loader.getController();
         primaryStage.setTitle("DatabaseClient");
         primaryStage.setScene(new Scene(root, 800, 500));
         primaryStage.show();
     }
 
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+
+        // for now, ugly(?) way to close connection...
+        if(controller.databaseHelper != null)
+            if(controller.databaseHelper.getConnection() != null)
+                controller.databaseHelper.getConnection().close();
+
+    }
 
     public static void main(String[] args) { launch(args); }
 }

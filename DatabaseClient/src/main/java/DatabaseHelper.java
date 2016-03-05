@@ -16,7 +16,9 @@
 
 package main.java;
 
+import java.lang.reflect.Field;
 import java.sql.*;
+import java.util.HashMap;
 
 /**
  * Created by Henri on 4.3.2016.
@@ -25,6 +27,16 @@ public class DatabaseHelper {
 
     private Connection connection;
     private Statement statement;
+    private static HashMap<Integer, String> sqlTypeNames = new HashMap<>();
+    static {
+        try {
+            for (Field field : Types.class.getFields()) {
+                sqlTypeNames.put((Integer) field.get(null), field.getName());
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 
     public Connection getConnection() {
         return connection;
@@ -49,4 +61,9 @@ public class DatabaseHelper {
         statement = connection.createStatement();
         return statement.executeUpdate(query);
     }
+
+    public String getSqlTypeName(int i) {
+        return sqlTypeNames.get(i);
+    }
+
 }
