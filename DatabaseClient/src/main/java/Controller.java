@@ -23,6 +23,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.util.Callback;
 
 import java.sql.ResultSet;
@@ -39,6 +41,13 @@ public class Controller {
     private TextArea log;
     @FXML
     TabPane resultsTabPane;
+
+    @FXML
+    protected void queryAreaOnKeyPress(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER && event.isControlDown()) {
+            runQuery(new ActionEvent());
+        }
+    }
 
     @FXML
     protected void runQuery(ActionEvent event) {
