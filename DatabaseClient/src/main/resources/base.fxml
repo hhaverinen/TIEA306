@@ -34,12 +34,12 @@
                   <SplitPane dividerPositions="0.2" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
                      <items>
                         <TextArea fx:id="queryArea" prefHeight="200.0" prefWidth="200.0" />
-                        <TableView fx:id="resultArea" prefHeight="200.0" prefWidth="200.0" />
+                        <TableView fx:id="resultArea" prefHeight="200.0" prefWidth="200.0"/>
                      </items>
                   </SplitPane>
                </items>
             </SplitPane>
-            <TextArea prefHeight="50.0" prefWidth="200.0" />
+            <TextArea fx:id="log" prefHeight="50.0" prefWidth="200.0" />
          </items>
       </SplitPane>
    </center>
