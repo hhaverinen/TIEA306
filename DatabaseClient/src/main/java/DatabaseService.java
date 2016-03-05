@@ -16,10 +16,16 @@
 
 package main.java;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
+import javafx.util.Callback;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,25 +36,50 @@ import java.util.Map;
  */
 public class DatabaseService {
 
-    public static List<Map> executeQuery(String query){
+
+    private DatabaseService() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void executeQuery(String query, TableView tableView) {
 
         Connection con = null;
         Statement statement = null;
-        List<Map> results = new ArrayList<>();
+        ObservableList<ObservableList> observableList = FXCollections.observableArrayList();
         try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection("jdbc:mysql://192.168.1.254/mock_base", "dbuser", "passw0rd");
             statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
-            while (resultSet.next()) {
-                Map<String,String> map = new HashMap<>();
-                map.put("id",resultSet.getInt("id")+"");
-                map.put("first_name",resultSet.getString("first_name"));
-                map.put("last_name",resultSet.getString("last_name"));
+            // clear old columns and add new ones
+            tableView.getColumns().clear();
+            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+            for(int i = 0; i < resultSetMetaData.getColumnCount(); i++) {
+                final int j = i;
+                TableColumn tableColumn = new TableColumn(resultSetMetaData.getColumnName(i+1));
+                tableColumn.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+                    public ObservableValue<String> call(CellDataFeatures<ObservableList, String> p) {
+                        return new ReadOnlyObjectWrapper(p.getValue().get(j).toString());
+                    }
+                });
 
-                results.add(map);
+                tableView.getColumns().add(tableColumn);
             }
+
+            while (resultSet.next()) {
+                ObservableList<String> row = FXCollections.observableArrayList();
+                for(int i = 0; i < resultSetMetaData.getColumnCount(); i++){
+                    row.add(resultSet.getString(i+1));
+                }
+                observableList.add(row);
+            }
+
+            tableView.setItems(observableList);
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -60,6 +91,5 @@ public class DatabaseService {
                 e.printStackTrace();
             }
         }
-        return results;
     }
 }

@@ -18,36 +18,25 @@ package main.java;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-
-import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Henri on 4.3.2016.
  */
 public class Controller {
-    @FXML private TextArea queryArea;
-    @FXML private TextArea resultArea;
+    @FXML
+    private TextArea queryArea;
+    @FXML
+    private TableView resultArea;
 
-    @FXML protected void runQuery(ActionEvent event) {
-        resultArea.clear();
-
-        try {
-            List<Map> results = DatabaseService.executeQuery(queryArea.getText());
-            StringBuilder sb = new StringBuilder("ID,Etunimi,Sukunimi\n");
-            for (Map map : results) {
-                sb.append(map.get("id") + ", " + map.get("first_name") + ", " + map.get("last_name")+"\n");
-            }
-            resultArea.setText(sb.toString());
-        } catch (Exception e) {
-
-        }
+    @FXML
+    protected void runQuery(ActionEvent event) {
+        DatabaseService.executeQuery(queryArea.getText(), resultArea);
     }
 
-    @FXML protected void clearQuery(ActionEvent event) {
+    @FXML
+    protected void clearQuery(ActionEvent event) {
         queryArea.clear();
     }
 
