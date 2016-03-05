@@ -105,7 +105,7 @@ public class Controller {
 
                 ResultSet columns = databaseMetaData.getColumns(null,null,tableName,null);
                 while(columns.next()){
-                    String columnData = columns.getString(4) + " - " + databaseHelper.getSqlTypeName(columns.getInt(5));
+                    String columnData = columns.getString(4) + " - " + JDBCType.valueOf(columns.getInt(5)).getName();
                     TreeItem<String> column = new TreeItem<>(columnData);
                     table.getChildren().add(column);
                 }
