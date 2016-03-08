@@ -47,6 +47,7 @@ public class Controller {
 
     protected DatabaseHelper databaseHelper;
 
+
     @FXML
     protected void queryAreaOnKeyPress(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER && event.isControlDown()) {
@@ -68,12 +69,14 @@ public class Controller {
             if (resultSet != null) {
                 buildTableData(resultSet);
             } else {
-                log.setText(String.format("Query completed successfully. %s rows affected.", affectedRows));
+                log.appendText(String.format("Query completed successfully. %s rows affected." + "\n", affectedRows));
             }
             databaseHelper.getStatement().close();
         } catch (Exception e) {
             e.printStackTrace();
-            log.setText(e.getMessage());
+            if (e.getMessage() != null) {
+                log.appendText(e.getMessage() + "\n");
+            } else { log.appendText("An error happened"  + "\n"); }
         }
     }
 
@@ -86,11 +89,11 @@ public class Controller {
 
         try {
             databaseHelper = new DatabaseHelper(url, user, password);
-            log.setText("Successfully connected to " + url);
+            log.appendText("Successfully connected to " + url + "\n");
             buildDatabaseMetaData();
         } catch (Exception e) {
             e.printStackTrace();
-            log.setText(e.getMessage());
+            log.appendText(e.getMessage() + "\n");
         }
     }
 
@@ -116,7 +119,7 @@ public class Controller {
             metadataPane.getChildren().add(vBox);
         } catch (SQLException e){
             e.printStackTrace();
-            log.setText(e.getMessage());
+            log.appendText(e.getMessage() + "\n");
         }
     }
 
@@ -157,10 +160,10 @@ public class Controller {
             resultsTabPane.getSelectionModel().select(tab);
 
             String resultText = String.format("Query returned %s results.", observableList.size());
-            log.setText(resultText);
+            log.appendText(resultText + "\n");
         } catch (SQLException e) {
             e.printStackTrace();
-            log.setText("Failed to build table data");
+            log.appendText("Failed to build table data" + "\n");
         }
     }
 

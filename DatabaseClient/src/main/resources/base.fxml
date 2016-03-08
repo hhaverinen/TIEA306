@@ -25,13 +25,14 @@
   ~ copies or substantial portions of the Software.
   -->
 
+<?import javafx.scene.control.PasswordField?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.Controller">
    <center>
       <SplitPane dividerPositions="0.9" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
          <items>
             <SplitPane dividerPositions="0.1" prefHeight="350.0" prefWidth="200.0">
                <items>
-                  <AnchorPane fx:id="metadataPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+                  <AnchorPane SplitPane.resizableWithParent="false" fx:id="metadataPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
                   <SplitPane dividerPositions="0.2" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
                      <items>
                         <TextArea fx:id="queryArea" onKeyPressed="#queryAreaOnKeyPress" prefHeight="200.0" prefWidth="200.0" />
@@ -40,18 +41,18 @@
                   </SplitPane>
                </items>
             </SplitPane>
-            <TextArea fx:id="log" prefHeight="50.0" prefWidth="200.0" />
+            <TextArea editable="false" fx:id="log" prefHeight="50.0" prefWidth="200.0" />
          </items>
       </SplitPane>
    </center>
    <top>
-      <HBox alignment="CENTER" prefHeight="30.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <HBox spacing="5" alignment="CENTER" prefHeight="30.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <Button mnemonicParsing="false" onAction="#runQuery" text="Run" />
             <Button mnemonicParsing="false" onAction="#connect" text="Connect" />
             <TextField fx:id="databaseUrl" text="jdbc:mysql://192.168.1.254/mock_base" />
             <TextField fx:id="databaseUser" text="dbuser" />
-            <TextField fx:id="databasePassword" text="passw0rd" />
+            <PasswordField fx:id="databasePassword" text="passw0rd" />
          </children>
       </HBox>
    </top>

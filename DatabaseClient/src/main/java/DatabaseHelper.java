@@ -28,6 +28,9 @@ public class DatabaseHelper {
     private Connection connection;
     private Statement statement;
 
+    private final int connectionTimeout = 10000;
+    private final int socketTimeout = 10000;
+
     public Connection getConnection() {
         return connection;
     }
@@ -38,7 +41,7 @@ public class DatabaseHelper {
 
     public DatabaseHelper(String url, String user, String password) throws Exception {
         Class.forName("com.mysql.jdbc.Driver").newInstance();
-        connection = DriverManager.getConnection(url, user, password);
+        connection = DriverManager.getConnection(url + "?" + getTimeoutParams(connectionTimeout, socketTimeout), user, password);
 
     }
 
@@ -50,6 +53,10 @@ public class DatabaseHelper {
     public int executeUpdate(String query) throws SQLException {
         statement = connection.createStatement();
         return statement.executeUpdate(query);
+    }
+
+    private String getTimeoutParams(int connectionTimeout, int socketTimeout) {
+        return "connectTimeout=" + connectionTimeout + "&socketTimeout=" + socketTimeout;
     }
     
 
