@@ -69,14 +69,14 @@ public class Controller {
             if (resultSet != null) {
                 buildTableData(resultSet);
             } else {
-                log.appendText(String.format("Query completed successfully. %s rows affected." + "\n", affectedRows));
+                writeLog("Query completed successfully. %s rows affected.", affectedRows);
             }
             databaseHelper.getStatement().close();
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage() != null) {
-                log.appendText(e.getMessage() + "\n");
-            } else { log.appendText("An error happened"  + "\n"); }
+                writeLog(e.getMessage());
+            } else { writeLog("An error happened"); }
         }
     }
 
@@ -89,11 +89,11 @@ public class Controller {
 
         try {
             databaseHelper = new DatabaseHelper(url, user, password);
-            log.appendText("Successfully connected to " + url + "\n");
+            writeLog("Successfully connected to " + url);
             buildDatabaseMetaData();
         } catch (Exception e) {
             e.printStackTrace();
-            log.appendText(e.getMessage() + "\n");
+            writeLog(e.getMessage());
         }
     }
 
@@ -102,6 +102,10 @@ public class Controller {
             DatabaseMetaData databaseMetaData = databaseHelper.getConnection().getMetaData();
             ResultSet tables = databaseMetaData.getTables(null,null,null,null);
             VBox vBox = new VBox();
+            AnchorPane.setTopAnchor(vBox,0.0);
+            AnchorPane.setBottomAnchor(vBox,0.0);
+            AnchorPane.setLeftAnchor(vBox,0.0);
+            AnchorPane.setRightAnchor(vBox,0.0);
             while (tables.next()) {
                 String tableName = tables.getString(3);
                 TreeItem<String> table = new TreeItem<>(tableName);
@@ -116,10 +120,11 @@ public class Controller {
                 TreeView<String> treeView = new TreeView<>(table);
                 vBox.getChildren().add(treeView);
             }
+            metadataPane.getChildren().clear();
             metadataPane.getChildren().add(vBox);
         } catch (SQLException e){
             e.printStackTrace();
-            log.appendText(e.getMessage() + "\n");
+            writeLog(e.getMessage());
         }
     }
 
@@ -160,11 +165,19 @@ public class Controller {
             resultsTabPane.getSelectionModel().select(tab);
 
             String resultText = String.format("Query returned %s results.", observableList.size());
-            log.appendText(resultText + "\n");
+            writeLog(resultText);
         } catch (SQLException e) {
             e.printStackTrace();
-            log.appendText("Failed to build table data" + "\n");
+            writeLog("Failed to build table data");
         }
+    }
+
+    private void writeLog(String message) {
+        log.appendText(message + "\n");
+    }
+
+    private void writeLog(String formattedMessage, Object... params) {
+        log.appendText(String.format(formattedMessage, params) + "\n");
     }
 
 }

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
@@ -25,35 +29,59 @@
   ~ copies or substantial portions of the Software.
   -->
 
-<?import javafx.scene.control.PasswordField?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.Controller">
    <center>
-      <SplitPane dividerPositions="0.9" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
-         <items>
-            <SplitPane dividerPositions="0.1" prefHeight="350.0" prefWidth="200.0">
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <center>
+            <SplitPane dividerPositions="0.9" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
                <items>
-                  <AnchorPane SplitPane.resizableWithParent="false" fx:id="metadataPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
-                  <SplitPane dividerPositions="0.2" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+                  <SplitPane dividerPositions="0.1" prefHeight="350.0" prefWidth="200.0">
                      <items>
-                        <TextArea fx:id="queryArea" onKeyPressed="#queryAreaOnKeyPress" prefHeight="200.0" prefWidth="200.0" />
-                        <TabPane fx:id="resultsTabPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" />
+                        <AnchorPane fx:id="metadataPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false" />
+                        <SplitPane dividerPositions="0.2" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+                           <items>
+                              <TextArea fx:id="queryArea" onKeyPressed="#queryAreaOnKeyPress" prefHeight="200.0" prefWidth="200.0" />
+                              <TabPane fx:id="resultsTabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" />
+                           </items>
+                        </SplitPane>
                      </items>
                   </SplitPane>
+                  <TextArea fx:id="log" editable="false" prefHeight="50.0" prefWidth="200.0" SplitPane.resizableWithParent="false" />
                </items>
             </SplitPane>
-            <TextArea editable="false" fx:id="log" prefHeight="50.0" prefWidth="200.0" />
-         </items>
-      </SplitPane>
+         </center>
+         <top>
+            <HBox alignment="CENTER" prefHeight="30.0" prefWidth="600.0" spacing="5" BorderPane.alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#runQuery" text="Run" />
+                  <Button mnemonicParsing="false" onAction="#connect" text="Connect" />
+                  <TextField fx:id="databaseUrl" text="jdbc:mysql://192.168.1.254/mock_base" />
+                  <TextField fx:id="databaseUser" text="dbuser" />
+                  <PasswordField fx:id="databasePassword" text="passw0rd" />
+               </children>
+            </HBox>
+         </top>
+      </BorderPane>
    </center>
    <top>
-      <HBox spacing="5" alignment="CENTER" prefHeight="30.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button mnemonicParsing="false" onAction="#runQuery" text="Run" />
-            <Button mnemonicParsing="false" onAction="#connect" text="Connect" />
-            <TextField fx:id="databaseUrl" text="jdbc:mysql://192.168.1.254/mock_base" />
-            <TextField fx:id="databaseUser" text="dbuser" />
-            <PasswordField fx:id="databasePassword" text="passw0rd" />
-         </children>
-      </HBox>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
    </top>
 </BorderPane>
