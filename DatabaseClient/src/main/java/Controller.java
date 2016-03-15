@@ -22,13 +22,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.awt.*;
 import java.sql.*;
 import java.util.List;
 
@@ -94,6 +102,20 @@ public class Controller {
         } catch (Exception e) {
             e.printStackTrace();
             writeLog(e.getMessage());
+        }
+    }
+
+    @FXML
+    protected void openAliasWindow(ActionEvent event) {
+        try {
+            Parent window = FXMLLoader.load(getClass().getResource("/main/resources/alias_window.fxml"));
+            Scene scene = new Scene(window, 400, 200);
+            Stage windowStage = new Stage();
+            windowStage.initModality(Modality.APPLICATION_MODAL);
+            windowStage.setScene(scene);
+            windowStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
