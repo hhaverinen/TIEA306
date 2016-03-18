@@ -16,9 +16,7 @@
 
 package main.java;
 
-import java.lang.reflect.Field;
 import java.sql.*;
-import java.util.HashMap;
 
 /**
  * Created by Henri on 4.3.2016.

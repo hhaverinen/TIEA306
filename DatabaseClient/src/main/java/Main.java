@@ -18,6 +18,10 @@
 package main.java;
 
 import javafx.application.Application;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -28,13 +32,19 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-    private Controller controller;
+    private MainController mainController;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResource("/main/resources/base.fxml").openStream());
-        controller = loader.getController();
+        mainController = loader.getController();
+
+        // for testing purpose
+        ObjectProperty<ObservableList> testi = new SimpleObjectProperty<>();
+        testi.set(FXCollections.observableArrayList(new ConnectionPOJO("jep","jop","pass","url")));
+        mainController.connectionsComboBox.itemsProperty().bind(testi);
+
         primaryStage.setTitle("DatabaseClient");
         primaryStage.setScene(new Scene(root, 800, 500));
         primaryStage.show();
@@ -45,9 +55,9 @@ public class Main extends Application {
         super.stop();
 
         // for now, ugly(?) way to close connection...
-        if(controller.databaseHelper != null)
-            if(controller.databaseHelper.getConnection() != null)
-                controller.databaseHelper.getConnection().close();
+        if(mainController.databaseHelper != null)
+            if(mainController.databaseHelper.getConnection() != null)
+                mainController.databaseHelper.getConnection().close();
 
     }
 

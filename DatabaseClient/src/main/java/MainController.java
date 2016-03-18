@@ -38,12 +38,13 @@ import javafx.util.Callback;
 
 import java.awt.*;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Henri on 4.3.2016.
  */
-public class Controller {
+public class MainController {
     @FXML
     private TextArea queryArea, log;
     @FXML
@@ -52,9 +53,12 @@ public class Controller {
     private TabPane resultsTabPane;
     @FXML
     private AnchorPane metadataPane;
+    @FXML
+    protected ComboBox connectionsComboBox;
 
     protected DatabaseHelper databaseHelper;
 
+    protected ArrayList<ConnectionPOJO> connections = new ArrayList<>();
 
     @FXML
     protected void queryAreaOnKeyPress(KeyEvent event) {

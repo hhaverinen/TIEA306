@@ -10,17 +10,9 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?imrpot javafx.collections.*?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
-   <bottom>
-      <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-        <buttons>
-          <Button mnemonicParsing="false" text="Add" />
-            <Button mnemonicParsing="false" text="Clear" />
-        </buttons>
-      </ButtonBar>
-   </bottom>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.AliasWindowController">
    <center>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -34,15 +26,26 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ComboBox prefWidth="150.0" GridPane.columnIndex="1" />
+            <ComboBox fx:id="driverBox" prefWidth="150.0" GridPane.columnIndex="1" />
             <Label text="Ajuri" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="urlField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="userField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="Osoite" GridPane.rowIndex="1" />
             <Label text="Käyttäjä" GridPane.rowIndex="2" />
             <Label text="Salasana" GridPane.rowIndex="3" />
-            <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
    </center>
+   <bottom>
+      <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <buttons>
+          <Button mnemonicParsing="false" onAction="#saveConnection" text="Add" />
+            <Button mnemonicParsing="false" text="Clear" />
+        </buttons>
+      </ButtonBar>
+   </bottom>
+   <top>
+      <Label fx:id="messageLabel" textFill="RED" BorderPane.alignment="CENTER" />
+   </top>
 </BorderPane>
