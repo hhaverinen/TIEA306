@@ -18,14 +18,13 @@
 package main.java;
 
 import javafx.application.Application;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * Created by Henri on 4.3.2016.
@@ -40,10 +39,38 @@ public class Main extends Application {
         Parent root = loader.load(getClass().getResource("/main/resources/base.fxml").openStream());
         mainController = loader.getController();
 
-        // for testing purpose
-        ObjectProperty<ObservableList> testi = new SimpleObjectProperty<>();
-        testi.set(FXCollections.observableArrayList(new ConnectionPOJO("jep","jop","pass","url")));
-        mainController.connectionsComboBox.itemsProperty().bind(testi);
+        // initialize combobox properties
+        mainController.connectionsComboBox.itemsProperty().bind(Context.getInstance().getConnections());
+        mainController.connectionsComboBox.setCellFactory(new Callback<ListView<ConnectionPOJO>, ListCell<ConnectionPOJO>>() {
+            @Override
+            public ListCell<ConnectionPOJO> call(ListView<ConnectionPOJO> p) {
+                ListCell cell = new ListCell<ConnectionPOJO>() {
+                    @Override
+                    protected void updateItem(ConnectionPOJO item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setText(null);
+                        } else {
+                            setText(item.getDatabaseUrl());
+                        }
+                    }
+                };
+                return cell;
+            }
+        });
+
+        mainController.connectionsComboBox.setButtonCell(new ListCell<ConnectionPOJO>() {
+            @Override
+            protected void updateItem(ConnectionPOJO item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(item.getDatabaseUrl());
+                }
+
+            }
+        });
 
         primaryStage.setTitle("DatabaseClient");
         primaryStage.setScene(new Scene(root, 800, 500));

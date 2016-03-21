@@ -46,15 +46,15 @@ public class AliasWindowController {
     private void saveConnection(ActionEvent event) {
         messageLabel.setText("");
 
-        String driverBoxSelection = (String) driverBox.getSelectionModel().getSelectedItem();
+        // for testing
+        String driverBoxSelection = "testi";//(String) driverBox.getSelectionModel().getSelectedItem();
         String urlFieldText = urlField.getText();
         String userFieldText = userField.getText();
         String passwordFieldText = passwordField.getText();
 
         if (driverBoxSelection != null && !urlFieldText.isEmpty() && !userFieldText.isEmpty() && !passwordFieldText.isEmpty()) {
             ConnectionPOJO cpojo = new ConnectionPOJO(driverBoxSelection, userFieldText, passwordFieldText, urlFieldText);
-            Context.getInstance().getConnections().add(cpojo);
-
+            Context.getInstance().getConnections().get().add(cpojo);
         } else {
             messageLabel.setText("Some information is missing!");
         }

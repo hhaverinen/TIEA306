@@ -16,6 +16,11 @@
 
 package main.java;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 
 /**
@@ -24,14 +29,17 @@ import java.util.ArrayList;
 public class Context {
 
     private final static Context instance = new Context();
+    private ObjectProperty<ObservableList<ConnectionPOJO>> connections = new SimpleObjectProperty<>();
+
+    private Context(){
+        connections.set(FXCollections.observableArrayList());
+    }
 
     public static Context getInstance(){
         return instance;
     }
 
-    private ArrayList<ConnectionPOJO> connections = new ArrayList<>();
-
-    public ArrayList<ConnectionPOJO> getConnections(){
+    public ObjectProperty<ObservableList<ConnectionPOJO>> getConnections(){
         return connections;
     }
 }
