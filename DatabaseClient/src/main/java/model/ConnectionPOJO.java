@@ -21,17 +21,23 @@ package main.java.model;
  */
 public class ConnectionPOJO {
 
+    private String aliasName;
     private String driver;
     private String username;
     private String password;
     private String databaseUrl;
 
-    public ConnectionPOJO(String driver, String username, String password, String databaseUrl) {
+    public ConnectionPOJO(String aliasName, String driver, String username, String password, String databaseUrl) {
+        this.aliasName = aliasName;
         this.driver = driver;
         this.username = username;
         this.password = password;
         this.databaseUrl = databaseUrl;
     }
+
+    public String getAliasName() { return aliasName; }
+
+    public void setAliasName(String aliasName) { this.aliasName = aliasName; }
 
     public String getDriver() {
         return driver;

@@ -54,7 +54,7 @@ public class Main extends Application {
                         if (empty) {
                             setText(null);
                         } else {
-                            setText(item.getDatabaseUrl());
+                            setText(item.getAliasName());
                         }
                     }
                 };
@@ -69,7 +69,7 @@ public class Main extends Application {
                 if (empty) {
                     setText(null);
                 } else {
-                    setText(item.getDatabaseUrl());
+                    setText(item.getAliasName());
                 }
 
             }

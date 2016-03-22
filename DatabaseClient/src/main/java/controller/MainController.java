@@ -58,8 +58,6 @@ public class MainController {
 
     public DatabaseHelper databaseHelper;
 
-    public ArrayList<ConnectionPOJO> connections = new ArrayList<>();
-
     @FXML
     protected void queryAreaOnKeyPress(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER && event.isControlDown()) {

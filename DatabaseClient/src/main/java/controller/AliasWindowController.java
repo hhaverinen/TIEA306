@@ -22,8 +22,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import main.java.helper.FileHelper;
 import main.java.model.ConnectionPOJO;
 import main.java.model.Context;
+
+import java.net.ConnectException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Henri on 18.3.2016.
@@ -34,7 +39,7 @@ public class AliasWindowController {
     private ComboBox driverBox;
 
     @FXML
-    private TextField urlField, userField;
+    private TextField aliasNameField, urlField, userField;
 
     @FXML
     private PasswordField passwordField;
@@ -47,14 +52,26 @@ public class AliasWindowController {
         messageLabel.setText("");
 
         // for testing
+        String aliasNameFieldText = aliasNameField.getText();
         String driverBoxSelection = "testi";//(String) driverBox.getSelectionModel().getSelectedItem();
         String urlFieldText = urlField.getText();
         String userFieldText = userField.getText();
         String passwordFieldText = passwordField.getText();
 
-        if (driverBoxSelection != null && !urlFieldText.isEmpty() && !userFieldText.isEmpty() && !passwordFieldText.isEmpty()) {
-            ConnectionPOJO cpojo = new ConnectionPOJO(driverBoxSelection, userFieldText, passwordFieldText, urlFieldText);
+        if (!aliasNameFieldText.isEmpty() && driverBoxSelection != null && !urlFieldText.isEmpty() && !userFieldText.isEmpty() && !passwordFieldText.isEmpty()) {
+            ConnectionPOJO cpojo = new ConnectionPOJO(aliasNameFieldText, driverBoxSelection, userFieldText, passwordFieldText, urlFieldText);
             Context.getInstance().getConnections().get().add(cpojo);
+            FileHelper helper = new FileHelper();
+            List<ConnectionPOJO> pojos = new ArrayList<>();
+            for (ConnectionPOJO pojo : Context.getInstance().getConnections().get()) {
+                pojos.add(pojo);
+            }
+
+            try {
+                helper.writeConnectionsToFile(pojos, "aliases.json");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             messageLabel.setText("Some information is missing!");
         }
