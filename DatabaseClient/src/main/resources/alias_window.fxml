@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?imrpot javafx.collections.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.AliasWindowController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.AliasWindowController">
    <center>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>

@@ -14,7 +14,7 @@
  * copies or substantial portions of the Software.
  */
 
-package main.java;
+package main.java.model;
 
 /**
  * Created by Henri on 18.3.2016.

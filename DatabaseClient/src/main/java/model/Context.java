@@ -14,14 +14,12 @@
  * copies or substantial portions of the Software.
  */
 
-package main.java;
+package main.java.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.util.ArrayList;
 
 /**
  * Created by Henri on 18.3.2016.

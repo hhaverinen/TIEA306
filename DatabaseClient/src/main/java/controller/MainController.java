@@ -14,7 +14,7 @@
  * copies or substantial portions of the Software.
  */
 
-package main.java;
+package main.java.controller;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
@@ -35,11 +35,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import main.java.model.ConnectionPOJO;
+import main.java.helper.DatabaseHelper;
 
-import java.awt.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Henri on 4.3.2016.
@@ -54,11 +54,11 @@ public class MainController {
     @FXML
     private AnchorPane metadataPane;
     @FXML
-    protected ComboBox connectionsComboBox;
+    public ComboBox connectionsComboBox;
 
-    protected DatabaseHelper databaseHelper;
+    public DatabaseHelper databaseHelper;
 
-    protected ArrayList<ConnectionPOJO> connections = new ArrayList<>();
+    public ArrayList<ConnectionPOJO> connections = new ArrayList<>();
 
     @FXML
     protected void queryAreaOnKeyPress(KeyEvent event) {

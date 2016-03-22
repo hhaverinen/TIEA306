@@ -25,6 +25,9 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import main.java.controller.MainController;
+import main.java.model.ConnectionPOJO;
+import main.java.model.Context;
 
 /**
  * Created by Henri on 4.3.2016.

@@ -14,7 +14,7 @@
  * copies or substantial portions of the Software.
  */
 
-package main.java;
+package main.java.helper;
 
 import java.sql.*;
 

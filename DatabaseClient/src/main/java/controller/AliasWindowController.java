@@ -14,7 +14,7 @@
  * copies or substantial portions of the Software.
  */
 
-package main.java;
+package main.java.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,8 +22,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
-import java.util.ArrayList;
+import main.java.model.ConnectionPOJO;
+import main.java.model.Context;
 
 /**
  * Created by Henri on 18.3.2016.
