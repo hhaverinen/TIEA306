@@ -27,8 +27,10 @@ import main.java.model.ConnectionPOJO;
 import main.java.model.Context;
 
 import java.net.ConnectException;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Henri on 18.3.2016.
@@ -62,11 +64,7 @@ public class AliasWindowController {
             ConnectionPOJO cpojo = new ConnectionPOJO(aliasNameFieldText, driverBoxSelection, userFieldText, passwordFieldText, urlFieldText);
             Context.getInstance().getConnections().get().add(cpojo);
             FileHelper helper = new FileHelper();
-            List<ConnectionPOJO> pojos = new ArrayList<>();
-            for (ConnectionPOJO pojo : Context.getInstance().getConnections().get()) {
-                pojos.add(pojo);
-            }
-
+            List<ConnectionPOJO> pojos =  Context.getInstance().getConnections().get().stream().collect(Collectors.toList());
             try {
                 helper.writeConnectionsToFile(pojos, "aliases.json");
             } catch (Exception e) {

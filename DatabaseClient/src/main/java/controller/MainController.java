@@ -121,6 +121,14 @@ public class MainController {
         }
     }
 
+    @FXML
+    protected void selectDatabaseConnection(ActionEvent event) {
+        ConnectionPOJO connectionPOJO = (ConnectionPOJO) connectionsComboBox.getSelectionModel().getSelectedItem();
+        databaseUrl.setText(connectionPOJO.getDatabaseUrl());
+        databaseUser.setText(connectionPOJO.getUsername());
+        databasePassword.setText(connectionPOJO.getPassword());
+    }
+
     private void buildDatabaseMetaData() {
         try {
             DatabaseMetaData databaseMetaData = databaseHelper.getConnection().getMetaData();

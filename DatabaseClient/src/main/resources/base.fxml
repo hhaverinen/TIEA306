@@ -56,7 +56,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#runQuery" text="Run" />
                   <Button mnemonicParsing="false" onAction="#connect" text="Connect" />
-                  <ComboBox fx:id="connectionsComboBox" prefWidth="100.0" />
+                  <ComboBox fx:id="connectionsComboBox" prefWidth="100.0" onAction="#selectDatabaseConnection"/>
                   <TextField fx:id="databaseUrl" text="jdbc:mysql://192.168.1.254/mock_base" />
                   <TextField fx:id="databaseUser" text="dbuser" />
                   <PasswordField fx:id="databasePassword" text="passw0rd" />
