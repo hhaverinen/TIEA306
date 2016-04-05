@@ -31,14 +31,20 @@ public class Context {
 
     private final static Context instance = new Context();
     private ObjectProperty<ObservableList<ConnectionPOJO>> connections = new SimpleObjectProperty<>();
+    private ObjectProperty<ObservableList<DriverPOJO>> drivers = new SimpleObjectProperty<>();
 
     private Context() {
         connections.set(FXCollections.observableArrayList());
+        drivers.set(FXCollections.observableArrayList());
 
         FileHelper helper = new FileHelper();
-        List<ConnectionPOJO> pojos = helper.readConnectionFromFile("aliases.json");
-        if (pojos != null) {
-            connections.get().addAll(pojos);
+        List<ConnectionPOJO> connectionPojos = helper.readConnectionsFromJsonFile("conf/aliases.json");
+        if (connectionPojos != null) {
+            connections.get().addAll(connectionPojos);
+        }
+        List<DriverPOJO> driverPojos = helper.readDriversFromJsonFile("conf/drivers.json");
+        if (driverPojos != null) {
+            drivers.get().addAll(driverPojos);
         }
     }
 
@@ -49,4 +55,5 @@ public class Context {
     public ObjectProperty<ObservableList<ConnectionPOJO>> getConnections(){
         return connections;
     }
+    public ObjectProperty<ObservableList<DriverPOJO>> getDrivers() { return drivers; }
 }

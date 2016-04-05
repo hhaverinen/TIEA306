@@ -25,10 +25,8 @@ import javafx.scene.control.TextField;
 import main.java.helper.FileHelper;
 import main.java.model.ConnectionPOJO;
 import main.java.model.Context;
+import main.java.model.DriverPOJO;
 
-import java.net.ConnectException;
-import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +36,7 @@ import java.util.stream.Collectors;
 public class AliasWindowController {
 
     @FXML
-    private ComboBox driverBox;
+    public ComboBox driverBox;
 
     @FXML
     private TextField aliasNameField, urlField, userField;
@@ -55,23 +53,23 @@ public class AliasWindowController {
 
         // for testing
         String aliasNameFieldText = aliasNameField.getText();
-        String driverBoxSelection = "testi";//(String) driverBox.getSelectionModel().getSelectedItem();
+        DriverPOJO driverBoxSelection = (DriverPOJO) driverBox.getSelectionModel().getSelectedItem();
         String urlFieldText = urlField.getText();
         String userFieldText = userField.getText();
         String passwordFieldText = passwordField.getText();
 
         if (!aliasNameFieldText.isEmpty() && driverBoxSelection != null && !urlFieldText.isEmpty() && !userFieldText.isEmpty() && !passwordFieldText.isEmpty()) {
-            ConnectionPOJO cpojo = new ConnectionPOJO(aliasNameFieldText, driverBoxSelection, userFieldText, passwordFieldText, urlFieldText);
+            ConnectionPOJO cpojo = new ConnectionPOJO(aliasNameFieldText, driverBoxSelection.getDriverName(), userFieldText, passwordFieldText, urlFieldText);
             Context.getInstance().getConnections().get().add(cpojo);
             FileHelper helper = new FileHelper();
             List<ConnectionPOJO> pojos =  Context.getInstance().getConnections().get().stream().collect(Collectors.toList());
             try {
-                helper.writeConnectionsToFile(pojos, "aliases.json");
+                helper.writeObjectsToJsonFile(pojos, "conf/aliases.json");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            messageLabel.setText("Some information is missing!");
+            messageLabel.setText("Please fill all the fields");
         }
     }
 

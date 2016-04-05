@@ -42,7 +42,7 @@ public class Main extends Application {
         Parent root = loader.load(getClass().getResource("/main/resources/base.fxml").openStream());
         mainController = loader.getController();
 
-        // initialize combobox properties
+        // initialize connections combobox properties
         mainController.connectionsComboBox.itemsProperty().bind(Context.getInstance().getConnections());
         mainController.connectionsComboBox.setCellFactory(new Callback<ListView<ConnectionPOJO>, ListCell<ConnectionPOJO>>() {
             @Override
@@ -76,7 +76,7 @@ public class Main extends Application {
         });
 
         primaryStage.setTitle("DatabaseClient");
-        primaryStage.setScene(new Scene(root, 800, 500));
+        primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.show();
     }
 

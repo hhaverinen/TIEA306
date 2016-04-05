@@ -37,6 +37,8 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import main.java.model.ConnectionPOJO;
 import main.java.helper.DatabaseHelper;
+import main.java.model.Context;
+import main.java.model.DriverPOJO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -97,22 +99,63 @@ public class MainController {
         String user = databaseUser.getText();
         String password = databasePassword.getText();
 
-        try {
-            databaseHelper = new DatabaseHelper(url, user, password);
-            writeLog("Successfully connected to " + url);
-            buildDatabaseMetaData();
-        } catch (Exception e) {
-            e.printStackTrace();
-            writeLog(e.getMessage());
+        if(!url.isEmpty() && !user.isEmpty() && !password.isEmpty()) {
+            try {
+                databaseHelper = new DatabaseHelper(url, user, password);
+                writeLog("Successfully connected to " + url);
+                buildDatabaseMetaData();
+            } catch (Exception e) {
+                e.printStackTrace();
+                writeLog(e.getMessage());
+            }
+        } else {
+            writeLog("Please fill all fields");
         }
     }
 
     @FXML
     protected void openAliasWindow(ActionEvent event) {
         try {
-            Parent window = FXMLLoader.load(getClass().getResource("/main/resources/alias_window.fxml"));
+            FXMLLoader loader = new FXMLLoader();
+            Parent window = loader.load(getClass().getResource("/main/resources/alias_window.fxml").openStream());
+            AliasWindowController aliasWindowController = loader.getController();
+
             Scene scene = new Scene(window, 400, 200);
             Stage windowStage = new Stage();
+
+            // init driver combobox
+            aliasWindowController.driverBox.itemsProperty().bind(Context.getInstance().getDrivers());
+            aliasWindowController.driverBox.setCellFactory(new Callback<ListView<DriverPOJO>, ListCell<DriverPOJO>>() {
+                @Override
+                public ListCell<DriverPOJO> call(ListView<DriverPOJO> p) {
+                    ListCell cell = new ListCell<DriverPOJO>() {
+                        @Override
+                        protected void updateItem(DriverPOJO item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setText(null);
+                            } else {
+                                setText(item.getDriverName());
+                            }
+                        }
+                    };
+                    return cell;
+                }
+            });
+
+            aliasWindowController.driverBox.setButtonCell(new ListCell<DriverPOJO>() {
+                @Override
+                protected void updateItem(DriverPOJO item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setText(null);
+                    } else {
+                        setText(item.getDriverName());
+                    }
+
+                }
+            });
+
             windowStage.initModality(Modality.APPLICATION_MODAL);
             windowStage.setScene(scene);
             windowStage.showAndWait();

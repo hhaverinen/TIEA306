@@ -30,7 +30,7 @@
   ~ copies or substantial portions of the Software.
   -->
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.MainController">
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <center>
@@ -57,9 +57,9 @@
                   <Button mnemonicParsing="false" onAction="#runQuery" text="Run" />
                   <Button mnemonicParsing="false" onAction="#connect" text="Connect" />
                   <ComboBox fx:id="connectionsComboBox" prefWidth="100.0" onAction="#selectDatabaseConnection"/>
-                  <TextField fx:id="databaseUrl" text="jdbc:mysql://192.168.1.254/mock_base" />
-                  <TextField fx:id="databaseUser" text="dbuser" />
-                  <PasswordField fx:id="databasePassword" text="passw0rd" />
+                  <TextField fx:id="databaseUrl" />
+                  <TextField fx:id="databaseUser" />
+                  <PasswordField fx:id="databasePassword" />
                </children>
             </HBox>
          </top>

@@ -38,9 +38,8 @@ public class DatabaseHelper {
     }
 
     public DatabaseHelper(String url, String user, String password) throws Exception {
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        //Class.forName("com.mysql.jdbc.Driver").newInstance(); // not needed?
         connection = DriverManager.getConnection(url + "?" + getTimeoutParams(connectionTimeout, socketTimeout), user, password);
-
     }
 
     public ResultSet executeQuery(String query) throws SQLException {

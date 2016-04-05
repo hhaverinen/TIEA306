@@ -19,6 +19,7 @@ package main.java.helper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import main.java.model.ConnectionPOJO;
+import main.java.model.DriverPOJO;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -29,7 +30,7 @@ import java.util.List;
  */
 public class FileHelper {
 
-    public void writeConnectionsToFile(List<ConnectionPOJO> objects, String fileName) {
+    public void writeObjectsToJsonFile(List objects, String fileName) {
         File file = new File(fileName);
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()))){
 
@@ -43,8 +44,9 @@ public class FileHelper {
         }
     }
 
-    public List<ConnectionPOJO> readConnectionFromFile(String filename) {
+    public List readConnectionsFromJsonFile(String filename) {
         StringBuilder content = new StringBuilder();
+
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filename))){
             String line;
             while((line = bufferedReader.readLine()) != null){
@@ -56,6 +58,23 @@ public class FileHelper {
 
         Gson gson = new Gson();
         Type collectionType = new TypeToken<List<ConnectionPOJO>>(){}.getType();
+        return gson.fromJson(content.toString(), collectionType);
+    }
+
+    public List readDriversFromJsonFile(String filename) {
+        StringBuilder content = new StringBuilder();
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filename))){
+            String line;
+            while((line = bufferedReader.readLine()) != null){
+                content.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Gson gson = new Gson();
+        Type collectionType = new TypeToken<List<DriverPOJO>>(){}.getType();
         return gson.fromJson(content.toString(), collectionType);
     }
 }
