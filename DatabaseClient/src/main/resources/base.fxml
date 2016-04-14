@@ -75,7 +75,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Aliases">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#openAliasWindow" text="Add alias" />
+              <MenuItem mnemonicParsing="false" onAction="#openAliasWindow" text="Manage aliases" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

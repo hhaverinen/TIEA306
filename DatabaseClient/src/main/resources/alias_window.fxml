@@ -28,7 +28,7 @@
         </rowConstraints>
          <children>
              <Label text="Alias name" />
-             <TextField GridPane.columnIndex="1" fx:id="aliasNameField"/>
+             <TextField fx:id="aliasNameField" GridPane.columnIndex="1" />
             <ComboBox fx:id="driverBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Driver" GridPane.rowIndex="1" />
             <TextField fx:id="urlField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -43,12 +43,13 @@
    <bottom>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <buttons>
-          <Button mnemonicParsing="false" onAction="#saveConnection" text="Add" />
-            <Button mnemonicParsing="false" text="Clear" />
+          <Button mnemonicParsing="false" onAction="#addAlias" text="Add" />
+            <Button mnemonicParsing="false" text="Modify" onAction="#modifyAlias"/>
+            <Button mnemonicParsing="false" text="Delete" onAction="#deleteAlias"/>
         </buttons>
       </ButtonBar>
    </bottom>
    <top>
-      <Label fx:id="messageLabel" textFill="RED" BorderPane.alignment="CENTER" />
+      <ComboBox fx:id="aliasBox" prefWidth="150.0" BorderPane.alignment="CENTER" onAction="#selectAlias" />
    </top>
 </BorderPane>

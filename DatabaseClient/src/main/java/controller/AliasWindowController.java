@@ -18,16 +18,17 @@ package main.java.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import main.java.helper.FileHelper;
 import main.java.model.ConnectionPOJO;
 import main.java.model.Context;
 import main.java.model.DriverPOJO;
 
+import java.awt.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
 public class AliasWindowController {
 
     @FXML
-    public ComboBox driverBox;
+    public ComboBox driverBox, aliasBox;
 
     @FXML
     private TextField aliasNameField, urlField, userField;
@@ -45,13 +46,7 @@ public class AliasWindowController {
     private PasswordField passwordField;
 
     @FXML
-    private Label messageLabel;
-
-    @FXML
-    private void saveConnection(ActionEvent event) {
-        messageLabel.setText("");
-
-        // for testing
+    private void addAlias(ActionEvent event) {
         String aliasNameFieldText = aliasNameField.getText();
         DriverPOJO driverBoxSelection = (DriverPOJO) driverBox.getSelectionModel().getSelectedItem();
         String urlFieldText = urlField.getText();
@@ -68,9 +63,46 @@ public class AliasWindowController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
-            messageLabel.setText("Please fill all the fields");
         }
+    }
+
+    @FXML
+    private void modifyAlias(ActionEvent event) {
+
+    }
+
+    @FXML
+    private void deleteAlias(ActionEvent event) {
+        ConnectionPOJO connectionPOJO = (ConnectionPOJO) aliasBox.getSelectionModel().getSelectedItem();
+
+        if (connectionPOJO != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete confirmation");
+            alert.setHeaderText("Are you sure you want to delete alias '" + connectionPOJO.getAliasName() + "'");
+            alert.setContentText("If you are, just hit the OK!");
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
+                Context.getInstance().getConnections().get().remove(connectionPOJO);
+                FileHelper helper = new FileHelper();
+                List<ConnectionPOJO> pojos =  Context.getInstance().getConnections().get().stream().collect(Collectors.toList());
+                try {
+                    helper.writeObjectsToJsonFile(pojos, "conf/aliases.json");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void selectAlias(ActionEvent event) {
+        ConnectionPOJO connectionPOJO = (ConnectionPOJO) aliasBox.getSelectionModel().getSelectedItem();
+        aliasNameField.setText(connectionPOJO.getAliasName());
+        //driverbox
+        urlField.setText(connectionPOJO.getDatabaseUrl());
+        userField.setText(connectionPOJO.getUsername());
+        passwordField.setText(connectionPOJO.getPassword());
     }
 
 }
