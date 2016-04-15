@@ -53,13 +53,14 @@ public class AliasWindowController {
         String userFieldText = userField.getText();
         String passwordFieldText = passwordField.getText();
 
-        if (!aliasNameFieldText.isEmpty() && driverBoxSelection != null && !urlFieldText.isEmpty() && !userFieldText.isEmpty() && !passwordFieldText.isEmpty()) {
+        if (checkFields()) {
             ConnectionPOJO cpojo = new ConnectionPOJO(aliasNameFieldText, driverBoxSelection.getDriverName(), userFieldText, passwordFieldText, urlFieldText);
             Context.getInstance().getConnections().get().add(cpojo);
             FileHelper helper = new FileHelper();
             List<ConnectionPOJO> pojos =  Context.getInstance().getConnections().get().stream().collect(Collectors.toList());
             try {
                 helper.writeObjectsToJsonFile(pojos, "conf/aliases.json");
+                aliasBox.getSelectionModel().select(cpojo);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -68,7 +69,31 @@ public class AliasWindowController {
 
     @FXML
     private void modifyAlias(ActionEvent event) {
+        ConnectionPOJO connectionPOJO = (ConnectionPOJO) aliasBox.getSelectionModel().getSelectedItem();
 
+        if (connectionPOJO != null && checkFields()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Modify confirmation");
+            alert.setHeaderText("Are you sure you want to modify alias '" + connectionPOJO.getAliasName() + "'");
+            alert.setContentText("If you are, just hit the OK!");
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
+                connectionPOJO.setAliasName(aliasNameField.getText());
+                connectionPOJO.setDatabaseUrl(urlField.getText());
+                connectionPOJO.setDriver(((DriverPOJO) driverBox.getSelectionModel().getSelectedItem()).getDriverName());
+                connectionPOJO.setUsername(userField.getText());
+                connectionPOJO.setPassword(userField.getText());
+
+                FileHelper helper = new FileHelper();
+                List<ConnectionPOJO> pojos =  Context.getInstance().getConnections().get().stream().collect(Collectors.toList());
+                try {
+                    helper.writeObjectsToJsonFile(pojos, "conf/aliases.json");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @FXML
@@ -103,6 +128,12 @@ public class AliasWindowController {
         urlField.setText(connectionPOJO.getDatabaseUrl());
         userField.setText(connectionPOJO.getUsername());
         passwordField.setText(connectionPOJO.getPassword());
+    }
+
+    private boolean checkFields() {
+        return (!aliasNameField.getText().isEmpty() && driverBox.getSelectionModel().getSelectedItem()
+                != null && !urlField.getText().isEmpty() && !userField.getText().isEmpty()
+                && !passwordField.getText().isEmpty());
     }
 
 }
