@@ -44,7 +44,7 @@ public class FileHelper {
         }
     }
 
-    public List readConnectionsFromJsonFile(String filename) {
+    public <T> List<T> readPojosFromJsonFile(String filename, Class<T> pojoclass) {
         StringBuilder content = new StringBuilder();
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filename))){
@@ -57,24 +57,7 @@ public class FileHelper {
         }
 
         Gson gson = new Gson();
-        Type collectionType = new TypeToken<List<ConnectionPOJO>>(){}.getType();
-        return gson.fromJson(content.toString(), collectionType);
-    }
-
-    public List readDriversFromJsonFile(String filename) {
-        StringBuilder content = new StringBuilder();
-
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filename))){
-            String line;
-            while((line = bufferedReader.readLine()) != null){
-                content.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Gson gson = new Gson();
-        Type collectionType = new TypeToken<List<DriverPOJO>>(){}.getType();
+        Type collectionType = new TypeToken<List<T>>(){}.getType();
         return gson.fromJson(content.toString(), collectionType);
     }
 }
