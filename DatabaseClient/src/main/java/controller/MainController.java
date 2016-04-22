@@ -92,6 +92,21 @@ public class MainController {
         }
     }
 
+    @FXML
+    protected void openSqlFile(ActionEvent event) {
+        //TODO
+    }
+
+    @FXML
+    protected void saveSqlSheet(ActionEvent event) {
+        //TODO
+    }
+
+    @FXML
+    protected void exportResultsToFile(ActionEvent event) {
+        //TODO
+    }
+
 
     @FXML
     protected void connect(ActionEvent event) {
