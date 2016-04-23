@@ -37,44 +37,10 @@ public class Main extends Application {
     private MainController mainController;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResource("/main/resources/base.fxml").openStream());
         mainController = loader.getController();
-
-        // initialize connections combobox properties
-        mainController.connectionsComboBox.itemsProperty().bind(Context.getInstance().getConnections());
-        mainController.connectionsComboBox.setCellFactory(new Callback<ListView<ConnectionPOJO>, ListCell<ConnectionPOJO>>() {
-            @Override
-            public ListCell<ConnectionPOJO> call(ListView<ConnectionPOJO> p) {
-                ListCell cell = new ListCell<ConnectionPOJO>() {
-                    @Override
-                    protected void updateItem(ConnectionPOJO item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setText(null);
-                        } else {
-                            setText(item.getAliasName());
-                        }
-                    }
-                };
-                return cell;
-            }
-        });
-
-        mainController.connectionsComboBox.setButtonCell(new ListCell<ConnectionPOJO>() {
-            @Override
-            protected void updateItem(ConnectionPOJO item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setText(null);
-                } else {
-                    setText(item.getAliasName());
-                }
-
-            }
-        });
-
         primaryStage.setTitle("DatabaseClient");
         primaryStage.setScene(new Scene(root, 1200, 800));
         primaryStage.show();

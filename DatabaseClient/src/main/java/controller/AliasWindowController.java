@@ -18,23 +18,27 @@ package main.java.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.util.Callback;
 import main.java.helper.FileHelper;
 import main.java.model.ConnectionPOJO;
 import main.java.model.Context;
 import main.java.model.DriverPOJO;
 
 import java.awt.*;
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 /**
  * Created by Henri on 18.3.2016.
  */
-public class AliasWindowController {
+public class AliasWindowController implements Initializable {
 
     @FXML
     public ComboBox driverBox, aliasBox;
@@ -44,6 +48,74 @@ public class AliasWindowController {
 
     @FXML
     private PasswordField passwordField;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // init driver combobox
+        driverBox.itemsProperty().bind(Context.getInstance().getDrivers());
+        driverBox.setCellFactory(new Callback<ListView<DriverPOJO>, ListCell<DriverPOJO>>() {
+            @Override
+            public ListCell<DriverPOJO> call(ListView<DriverPOJO> p) {
+                ListCell cell = new ListCell<DriverPOJO>() {
+                    @Override
+                    protected void updateItem(DriverPOJO item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setText(null);
+                        } else {
+                            setText(item.getDriverName());
+                        }
+                    }
+                };
+                return cell;
+            }
+        });
+
+        driverBox.setButtonCell(new ListCell<DriverPOJO>() {
+            @Override
+            protected void updateItem(DriverPOJO item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(item.getDriverName());
+                }
+
+            }
+        });
+
+        aliasBox.itemsProperty().bind(Context.getInstance().getConnections());
+        aliasBox.setCellFactory(new Callback<ListView<ConnectionPOJO>, ListCell<ConnectionPOJO>>() {
+            @Override
+            public ListCell<ConnectionPOJO> call(ListView<ConnectionPOJO> p) {
+                ListCell cell = new ListCell<ConnectionPOJO>() {
+                    @Override
+                    protected void updateItem(ConnectionPOJO item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setText(null);
+                        } else {
+                            setText(item.getAliasName());
+                        }
+                    }
+                };
+                return cell;
+            }
+        });
+
+        aliasBox.setButtonCell(new ListCell<ConnectionPOJO>() {
+            @Override
+            protected void updateItem(ConnectionPOJO item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(item.getAliasName());
+                }
+
+            }
+        });
+    }
 
     @FXML
     private void addAlias(ActionEvent event) {
