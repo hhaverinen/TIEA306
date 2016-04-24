@@ -31,6 +31,7 @@
   ~ copies or substantial portions of the Software.
   -->
 
+<?import main.java.component.PojoComboBox?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.MainController">
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -58,7 +59,7 @@
                   <HBox alignment="CENTER" prefHeight="30.0" prefWidth="600.0" spacing="5">
                      <children>
                         <Button mnemonicParsing="false" onAction="#connect" text="Connect" />
-                        <ComboBox fx:id="connectionsComboBox" onAction="#selectDatabaseConnection" prefWidth="100.0" />
+                        <PojoComboBox fx:id="connectionsComboBox" onAction="#selectDatabaseConnection" prefWidth="100.0" />
                         <TextField fx:id="databaseUrl" />
                         <TextField fx:id="databaseUser" />
                         <PasswordField fx:id="databasePassword" />

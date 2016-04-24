@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?imrpot javafx.collections.*?>
 
+<?import main.java.component.PojoComboBox?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.AliasWindowController">
    <center>
       <GridPane BorderPane.alignment="CENTER">
@@ -29,7 +30,7 @@
          <children>
              <Label text="Alias name" />
              <TextField fx:id="aliasNameField" GridPane.columnIndex="1" />
-            <ComboBox fx:id="driverBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <PojoComboBox fx:id="driverBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Driver" GridPane.rowIndex="1" />
             <TextField fx:id="urlField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="userField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -50,6 +51,6 @@
       </ButtonBar>
    </bottom>
    <top>
-      <ComboBox fx:id="aliasBox" prefWidth="150.0" BorderPane.alignment="CENTER" onAction="#selectAlias" />
+      <PojoComboBox fx:id="aliasBox" prefWidth="150.0" BorderPane.alignment="CENTER" onAction="#selectAlias" />
    </top>
 </BorderPane>

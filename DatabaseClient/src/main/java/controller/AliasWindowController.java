@@ -51,70 +51,9 @@ public class AliasWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // init driver combobox
+        // make bindings
         driverBox.itemsProperty().bind(Context.getInstance().getDrivers());
-        driverBox.setCellFactory(new Callback<ListView<DriverPOJO>, ListCell<DriverPOJO>>() {
-            @Override
-            public ListCell<DriverPOJO> call(ListView<DriverPOJO> p) {
-                ListCell cell = new ListCell<DriverPOJO>() {
-                    @Override
-                    protected void updateItem(DriverPOJO item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setText(null);
-                        } else {
-                            setText(item.getDriverName());
-                        }
-                    }
-                };
-                return cell;
-            }
-        });
-
-        driverBox.setButtonCell(new ListCell<DriverPOJO>() {
-            @Override
-            protected void updateItem(DriverPOJO item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setText(null);
-                } else {
-                    setText(item.getDriverName());
-                }
-
-            }
-        });
-
         aliasBox.itemsProperty().bind(Context.getInstance().getConnections());
-        aliasBox.setCellFactory(new Callback<ListView<ConnectionPOJO>, ListCell<ConnectionPOJO>>() {
-            @Override
-            public ListCell<ConnectionPOJO> call(ListView<ConnectionPOJO> p) {
-                ListCell cell = new ListCell<ConnectionPOJO>() {
-                    @Override
-                    protected void updateItem(ConnectionPOJO item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setText(null);
-                        } else {
-                            setText(item.getAliasName());
-                        }
-                    }
-                };
-                return cell;
-            }
-        });
-
-        aliasBox.setButtonCell(new ListCell<ConnectionPOJO>() {
-            @Override
-            protected void updateItem(ConnectionPOJO item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setText(null);
-                } else {
-                    setText(item.getAliasName());
-                }
-
-            }
-        });
     }
 
     @FXML
@@ -126,7 +65,7 @@ public class AliasWindowController implements Initializable {
         String passwordFieldText = passwordField.getText();
 
         if (checkFields()) {
-            ConnectionPOJO cpojo = new ConnectionPOJO(aliasNameFieldText, driverBoxSelection.getDriverName(), userFieldText, passwordFieldText, urlFieldText);
+            ConnectionPOJO cpojo = new ConnectionPOJO(aliasNameFieldText, driverBoxSelection.getName(), userFieldText, passwordFieldText, urlFieldText);
             Context.getInstance().getConnections().get().add(cpojo);
             FileHelper helper = new FileHelper();
             List<ConnectionPOJO> pojos =  Context.getInstance().getConnections().get().stream().collect(Collectors.toList());
@@ -146,14 +85,14 @@ public class AliasWindowController implements Initializable {
         if (connectionPOJO != null && checkFields()) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Modify confirmation");
-            alert.setHeaderText("Are you sure you want to modify alias '" + connectionPOJO.getAliasName() + "'");
+            alert.setHeaderText("Are you sure you want to modify alias '" + connectionPOJO.getName() + "'");
             alert.setContentText("If you are, just hit the OK!");
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.get() == ButtonType.OK) {
-                connectionPOJO.setAliasName(aliasNameField.getText());
+                connectionPOJO.setName(aliasNameField.getText());
                 connectionPOJO.setDatabaseUrl(urlField.getText());
-                connectionPOJO.setDriver(((DriverPOJO) driverBox.getSelectionModel().getSelectedItem()).getDriverName());
+                connectionPOJO.setDriver(((DriverPOJO) driverBox.getSelectionModel().getSelectedItem()).getName());
                 connectionPOJO.setUsername(userField.getText());
                 connectionPOJO.setPassword(userField.getText());
 
@@ -175,7 +114,7 @@ public class AliasWindowController implements Initializable {
         if (connectionPOJO != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Delete confirmation");
-            alert.setHeaderText("Are you sure you want to delete alias '" + connectionPOJO.getAliasName() + "'");
+            alert.setHeaderText("Are you sure you want to delete alias '" + connectionPOJO.getName() + "'");
             alert.setContentText("If you are, just hit the OK!");
             Optional<ButtonType> result = alert.showAndWait();
 
@@ -195,7 +134,7 @@ public class AliasWindowController implements Initializable {
     @FXML
     private void selectAlias(ActionEvent event) {
         ConnectionPOJO connectionPOJO = (ConnectionPOJO) aliasBox.getSelectionModel().getSelectedItem();
-        aliasNameField.setText(connectionPOJO.getAliasName());
+        aliasNameField.setText(connectionPOJO.getName());
         //driverbox
         urlField.setText(connectionPOJO.getDatabaseUrl());
         userField.setText(connectionPOJO.getUsername());

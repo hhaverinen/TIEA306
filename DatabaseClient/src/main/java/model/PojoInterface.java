@@ -17,32 +17,9 @@
 package main.java.model;
 
 /**
- * Created by Henri on 5.4.2016.
+ * Created by Henri on 24.4.2016.
  */
-public class DriverPOJO implements PojoInterface {
+public interface PojoInterface {
 
-    private String name;
-    private String pathToJar;
-
-    public DriverPOJO(String name, String pathToJar) {
-        this.name = name;
-        this.pathToJar = pathToJar;
-    }
-
-    public String getPathToJar() {
-        return pathToJar;
-    }
-
-    public void setPathToJar(String pathToJar) {
-        this.pathToJar = pathToJar;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    public String getName();
 }

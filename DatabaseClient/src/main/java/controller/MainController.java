@@ -65,38 +65,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // initialize connections combobox properties
+        // make binding
         connectionsComboBox.itemsProperty().bind(Context.getInstance().getConnections());
-        connectionsComboBox.setCellFactory(new Callback<ListView<ConnectionPOJO>, ListCell<ConnectionPOJO>>() {
-            @Override
-            public ListCell<ConnectionPOJO> call(ListView<ConnectionPOJO> p) {
-                ListCell cell = new ListCell<ConnectionPOJO>() {
-                    @Override
-                    protected void updateItem(ConnectionPOJO item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setText(null);
-                        } else {
-                            setText(item.getAliasName());
-                        }
-                    }
-                };
-                return cell;
-            }
-        });
-
-        connectionsComboBox.setButtonCell(new ListCell<ConnectionPOJO>() {
-            @Override
-            protected void updateItem(ConnectionPOJO item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setText(null);
-                } else {
-                    setText(item.getAliasName());
-                }
-
-            }
-        });
     }
 
     @FXML

@@ -19,25 +19,25 @@ package main.java.model;
 /**
  * Created by Henri on 18.3.2016.
  */
-public class ConnectionPOJO {
+public class ConnectionPOJO implements PojoInterface {
 
-    private String aliasName;
+    private String name;
     private String driver;
     private String username;
     private String password;
     private String databaseUrl;
 
-    public ConnectionPOJO(String aliasName, String driver, String username, String password, String databaseUrl) {
-        this.aliasName = aliasName;
+    public ConnectionPOJO(String name, String driver, String username, String password, String databaseUrl) {
+        this.name = name;
         this.driver = driver;
         this.username = username;
         this.password = password;
         this.databaseUrl = databaseUrl;
     }
 
-    public String getAliasName() { return aliasName; }
+    public String getName() { return name; }
 
-    public void setAliasName(String aliasName) { this.aliasName = aliasName; }
+    public void setName(String name) { this.name = name; }
 
     public String getDriver() {
         return driver;
