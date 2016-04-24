@@ -32,7 +32,7 @@ public class FileHelper {
 
     public void writeObjectsToJsonFile(List objects, String fileName) {
         File file = new File(fileName);
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()))){
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()))) {
 
             if (!file.exists()) {
                 file.createNewFile();
@@ -44,38 +44,38 @@ public class FileHelper {
         }
     }
 
-    public List readConnectionsFromJsonFile(String filename) {
-        StringBuilder content = new StringBuilder();
-
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filename))){
-            String line;
-            while((line = bufferedReader.readLine()) != null){
-                content.append(line);
-            }
+    public List readPojosFromJsonFile(String filename, Type collectionType) {
+        String content = null;
+        try {
+            content = readTextFromFile(new File(filename));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         Gson gson = new Gson();
-        Type collectionType = new TypeToken<List<ConnectionPOJO>>(){}.getType();
-        return gson.fromJson(content.toString(), collectionType);
+        return gson.fromJson(content, collectionType);
     }
 
-    public List readDriversFromJsonFile(String filename) {
-        StringBuilder content = new StringBuilder();
+    public void writeTextToFile(File file, String text) throws IOException {
+        try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()))) {
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filename))){
-            String line;
-            while((line = bufferedReader.readLine()) != null){
-                content.append(line);
+            if (!file.exists()) {
+                file.createNewFile();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            bufferedWriter.write(text);
         }
+    }
 
-        Gson gson = new Gson();
-        Type collectionType = new TypeToken<List<DriverPOJO>>(){}.getType();
-        return gson.fromJson(content.toString(), collectionType);
+    public String readTextFromFile(File file) throws IOException {
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(file.getAbsoluteFile()))) {
+            StringBuilder content = new StringBuilder();
+            int character;
+            while ((character =  bufferedReader.read()) != -1) {
+                content.append((char) character);
+            }
+
+            return content.toString();
+        }
     }
 
 }

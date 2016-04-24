@@ -33,14 +33,19 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import main.java.Main;
+import main.java.helper.FileHelper;
 import main.java.model.ConnectionPOJO;
 import main.java.helper.DatabaseHelper;
 import main.java.model.Context;
 import main.java.model.DriverPOJO;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
@@ -82,10 +87,14 @@ public class MainController implements Initializable {
             String query = queryArea.getText();
             ResultSet resultSet = null;
             int affectedRows = 0;
-            if (query.split(" ")[0].equalsIgnoreCase("select")) {
+            String queryType = query.split(" ")[0];
+            if (queryType.equalsIgnoreCase("select")) {
                 resultSet = databaseHelper.executeQuery(query);
-            } else {
+            } else if (queryType.equalsIgnoreCase("insert") || queryType.equalsIgnoreCase("update") || queryType.equalsIgnoreCase("delete")){
                 affectedRows = databaseHelper.executeUpdate(query);
+            } else {
+                writeLog("Query type %s is not supported. Use select, insert, update or delete.", queryType);
+                return;
             }
             if (resultSet != null) {
                 buildTableData(resultSet);
@@ -103,17 +112,79 @@ public class MainController implements Initializable {
 
     @FXML
     protected void openSqlFile(ActionEvent event) {
-        //TODO
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose sql file to open");
+        Stage stage = new Stage();
+        File file = fileChooser.showOpenDialog(stage);
+        if (file != null) {
+            try {
+                FileHelper fileHelper = new FileHelper();
+                String content = fileHelper.readTextFromFile(file);
+                queryArea.appendText(content);
+                writeLog("Successfully opened file");
+            } catch (IOException e) {
+                writeLog("Opening file failed, error message: %s", e.getMessage());
+            }
+        }
     }
 
     @FXML
     protected void saveSqlSheet(ActionEvent event) {
-        //TODO
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose file where to save");
+        Stage stage = new Stage();
+        File file = fileChooser.showSaveDialog(stage);
+        if (file != null) {
+            try {
+                FileHelper fileHelper = new FileHelper();
+                fileHelper.writeTextToFile(file, queryArea.getText());
+                writeLog("Save completed");
+            } catch (IOException e){
+                writeLog("Saving failed, error message: %s", e.getMessage());
+            }
+        }
     }
 
     @FXML
     protected void exportResultsToFile(ActionEvent event) {
-        //TODO
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose file where to save");
+        Stage stage = new Stage();
+        File file = fileChooser.showSaveDialog(stage);
+        if (file != null) {
+            try {
+                String query = queryArea.getText();
+                ResultSet resultSet = null;
+                String queryType = query.split(" ")[0];
+                if (queryType.equalsIgnoreCase("select")) {
+                    resultSet = databaseHelper.executeQuery(query);
+                } else {
+                    writeLog("Use select clause to get data for saving");
+                    return;
+                }
+                StringBuilder results = new StringBuilder();
+                int columns = resultSet.getMetaData().getColumnCount();
+
+                while (resultSet.next()) {
+                    StringBuilder row = new StringBuilder();
+                    for (int i = 1; i < columns; i++) {
+                        row.append(resultSet.getString(i));
+                        row.append(',');
+                    }
+                    row.append(resultSet.getString(columns));
+                    results.append(row.toString());
+                    results.append(System.lineSeparator());
+                }
+
+                databaseHelper.getStatement().close();
+
+                FileHelper fileHelper = new FileHelper();
+                fileHelper.writeTextToFile(file, results.toString());
+                writeLog("Save completed");
+            } catch (IOException|SQLException e){
+                writeLog("Saving failed, error message: %s", e.getMessage());
+            }
+        }
     }
 
 
@@ -195,8 +266,6 @@ public class MainController implements Initializable {
         ObservableList<ObservableList> observableList = FXCollections.observableArrayList();
         TableView tableView = new TableView();
         try {
-            // clear old columns and add new ones
-            tableView.getColumns().clear();
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
             for (int i = 0; i < resultSetMetaData.getColumnCount(); i++) {
                 final int j = i;
@@ -213,8 +282,8 @@ public class MainController implements Initializable {
             // add data to columns
             while (resultSet.next()) {
                 ObservableList<String> row = FXCollections.observableArrayList();
-                for (int i = 0; i < resultSetMetaData.getColumnCount(); i++) {
-                    row.add(resultSet.getString(i + 1));
+                for (int i = 1; i <= resultSetMetaData.getColumnCount(); i++) {
+                    row.add(resultSet.getString(i));
                 }
                 observableList.add(row);
             }

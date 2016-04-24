@@ -16,12 +16,14 @@
 
 package main.java.model;
 
+import com.google.gson.reflect.TypeToken;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import main.java.helper.FileHelper;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -38,22 +40,27 @@ public class Context {
         drivers.set(FXCollections.observableArrayList());
 
         FileHelper helper = new FileHelper();
-        List<ConnectionPOJO> connectionPojos = helper.readConnectionsFromJsonFile("conf/aliases.json");
+        List<ConnectionPOJO> connectionPojos = helper.readPojosFromJsonFile("conf/aliases.json", new TypeToken<List<ConnectionPOJO>>() {
+        }.getType());
         if (connectionPojos != null) {
             connections.get().addAll(connectionPojos);
         }
-        List<DriverPOJO> driverPojos = helper.readDriversFromJsonFile("conf/drivers.json");
+        List<DriverPOJO> driverPojos = helper.readPojosFromJsonFile("conf/drivers.json", new TypeToken<List<DriverPOJO>>() {
+        }.getType());
         if (driverPojos != null) {
             drivers.get().addAll(driverPojos);
         }
     }
 
-    public static Context getInstance(){
+    public static Context getInstance() {
         return instance;
     }
 
-    public ObjectProperty<ObservableList<ConnectionPOJO>> getConnections(){
+    public ObjectProperty<ObservableList<ConnectionPOJO>> getConnections() {
         return connections;
     }
-    public ObjectProperty<ObservableList<DriverPOJO>> getDrivers() { return drivers; }
+
+    public ObjectProperty<ObservableList<DriverPOJO>> getDrivers() {
+        return drivers;
+    }
 }
