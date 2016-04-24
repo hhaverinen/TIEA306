@@ -1,5 +1,5 @@
 # output folder
-DatabaseClient/out/*
+DatabaseClient/out/production/*
 
 # workspace settings
 DatabaseClient/.idea/copyright/*
