@@ -65,7 +65,7 @@ public class AliasWindowController implements Initializable {
         String passwordFieldText = passwordField.getText();
 
         if (checkFields()) {
-            ConnectionPOJO cpojo = new ConnectionPOJO(aliasNameFieldText, driverBoxSelection.getName(), userFieldText, passwordFieldText, urlFieldText);
+            ConnectionPOJO cpojo = new ConnectionPOJO(aliasNameFieldText, driverBoxSelection, userFieldText, passwordFieldText, urlFieldText);
             Context.getInstance().getConnections().get().add(cpojo);
             FileHelper helper = new FileHelper();
             List<ConnectionPOJO> pojos =  Context.getInstance().getConnections().get().stream().collect(Collectors.toList());
@@ -92,7 +92,7 @@ public class AliasWindowController implements Initializable {
             if (result.get() == ButtonType.OK) {
                 connectionPOJO.setName(aliasNameField.getText());
                 connectionPOJO.setDatabaseUrl(urlField.getText());
-                connectionPOJO.setDriver(((DriverPOJO) driverBox.getSelectionModel().getSelectedItem()).getName());
+                connectionPOJO.setDriver(((DriverPOJO) driverBox.getSelectionModel().getSelectedItem()));
                 connectionPOJO.setUsername(userField.getText());
                 connectionPOJO.setPassword(userField.getText());
 
@@ -135,7 +135,7 @@ public class AliasWindowController implements Initializable {
     private void selectAlias(ActionEvent event) {
         ConnectionPOJO connectionPOJO = (ConnectionPOJO) aliasBox.getSelectionModel().getSelectedItem();
         aliasNameField.setText(connectionPOJO.getName());
-        //driverbox
+        driverBox.getSelectionModel().select(connectionPOJO.getDriver()); // FIXME does not select correct object
         urlField.setText(connectionPOJO.getDatabaseUrl());
         userField.setText(connectionPOJO.getUsername());
         passwordField.setText(connectionPOJO.getPassword());

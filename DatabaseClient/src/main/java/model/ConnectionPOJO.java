@@ -22,12 +22,12 @@ package main.java.model;
 public class ConnectionPOJO implements PojoInterface {
 
     private String name;
-    private String driver;
+    private DriverPOJO driver;
     private String username;
     private String password;
     private String databaseUrl;
 
-    public ConnectionPOJO(String name, String driver, String username, String password, String databaseUrl) {
+    public ConnectionPOJO(String name, DriverPOJO driver, String username, String password, String databaseUrl) {
         this.name = name;
         this.driver = driver;
         this.username = username;
@@ -39,11 +39,11 @@ public class ConnectionPOJO implements PojoInterface {
 
     public void setName(String name) { this.name = name; }
 
-    public String getDriver() {
+    public DriverPOJO getDriver() {
         return driver;
     }
 
-    public void setDriver(String driver) {
+    public void setDriver(DriverPOJO driver) {
         this.driver = driver;
     }
 
