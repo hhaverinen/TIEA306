@@ -38,11 +38,11 @@ public class Context {
         drivers.set(FXCollections.observableArrayList());
 
         FileHelper helper = new FileHelper();
-        List<ConnectionPOJO> connectionPojos = helper.readPojosFromJsonFile("conf/aliases.json", ConnectionPOJO.class);
+        List<ConnectionPOJO> connectionPojos = helper.readConnectionsFromJsonFile("conf/aliases.json");
         if (connectionPojos != null) {
             connections.get().addAll(connectionPojos);
         }
-        List<DriverPOJO> driverPojos = helper.readPojosFromJsonFile("conf/drivers.json", DriverPOJO.class);
+        List<DriverPOJO> driverPojos = helper.readDriversFromJsonFile("conf/drivers.json");
         if (driverPojos != null) {
             drivers.get().addAll(driverPojos);
         }
