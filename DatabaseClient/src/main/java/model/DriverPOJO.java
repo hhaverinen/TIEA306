@@ -18,6 +18,8 @@ package main.java.model;
 
 /**
  * Created by Henri on 5.4.2016.
+ *
+ * Model for driver
  */
 public class DriverPOJO implements PojoInterface {
 

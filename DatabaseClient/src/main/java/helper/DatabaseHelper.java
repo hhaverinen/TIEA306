@@ -20,6 +20,8 @@ import java.sql.*;
 
 /**
  * Created by Henri on 4.3.2016.
+ *
+ * Helper for managing database connection
  */
 public class DatabaseHelper {
 
@@ -37,21 +39,46 @@ public class DatabaseHelper {
         return statement;
     }
 
+    /**
+     * constructor for DatabaseHelper
+     * @param url database's url
+     * @param user database's user
+     * @param password user's password
+     * @throws Exception
+     */
     public DatabaseHelper(String url, String user, String password) throws Exception {
         //Class.forName("com.mysql.jdbc.Driver").newInstance(); // not needed?
         connection = DriverManager.getConnection(url + "?" + getTimeoutParams(connectionTimeout, socketTimeout), user, password);
     }
 
+    /**
+     * executes select queries to database
+     * @param query query to execute
+     * @return returns resultset of query
+     * @throws SQLException
+     */
     public ResultSet executeQuery(String query) throws SQLException {
         statement = connection.createStatement();
         return statement.executeQuery(query);
     }
 
+    /**
+     * executes insert, update or delete queries to database
+     * @param query query to execute
+     * @return returns number of affected rows
+     * @throws SQLException
+     */
     public int executeUpdate(String query) throws SQLException {
         statement = connection.createStatement();
         return statement.executeUpdate(query);
     }
 
+    /**
+     * returns timeout parameters in url format
+     * @param connectionTimeout timeout for connection
+     * @param socketTimeout timeout for socket
+     * @return returns string containing timeout parameters in url format
+     */
     private String getTimeoutParams(int connectionTimeout, int socketTimeout) {
         return "connectTimeout=" + connectionTimeout + "&socketTimeout=" + socketTimeout;
     }

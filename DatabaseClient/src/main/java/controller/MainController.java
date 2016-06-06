@@ -53,6 +53,8 @@ import java.util.ResourceBundle;
 
 /**
  * Created by Henri on 4.3.2016.
+ *
+ * Handles user inputs in main window
  */
 public class MainController implements Initializable {
     @FXML
@@ -71,6 +73,11 @@ public class MainController implements Initializable {
     public DatabaseHelper databaseHelper;
     public CodeArea queryArea;
 
+    /**
+     * initializes queryArea and makes bindings
+     * @param url not used
+     * @param resourceBundle not used
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // make binding
@@ -90,6 +97,10 @@ public class MainController implements Initializable {
         mainArea.getItems().add(0, queryArea);
     }
 
+    /**
+     * executes a sql query
+     * @param event not used
+     */
     @FXML
     protected void runQuery(ActionEvent event) {
         try {
@@ -119,6 +130,10 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * reads contents of a file to queryArea
+     * @param event not used
+     */
     @FXML
     protected void openSqlFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -137,6 +152,10 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * writes contents of the queryArea to file
+     * @param event not used
+     */
     @FXML
     protected void saveSqlSheet(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -154,6 +173,10 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * runs selected sql query and writes results to a file in comma separated format
+     * @param event not used
+     */
     @FXML
     protected void exportResultsToFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -196,7 +219,10 @@ public class MainController implements Initializable {
         }
     }
 
-
+    /**
+     * establishes a connection to database
+     * @param event not used
+     */
     @FXML
     protected void connect(ActionEvent event) {
         String url = databaseUrl.getText();
@@ -217,6 +243,10 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * opens a new window containing controls for managing connections
+     * @param event not used
+     */
     @FXML
     protected void openAliasWindow(ActionEvent event) {
         try {
@@ -232,6 +262,10 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * adds connection's information to corresponding fields when connection is selected from dropdown box
+     * @param event not used
+     */
     @FXML
     protected void selectDatabaseConnection(ActionEvent event) {
         ConnectionPOJO connectionPOJO = (ConnectionPOJO) connectionsComboBox.getSelectionModel().getSelectedItem();
@@ -240,6 +274,9 @@ public class MainController implements Initializable {
         databasePassword.setText(connectionPOJO.getPassword());
     }
 
+    /**
+     * builds a tree view of database's tables upon connection
+     */
     private void buildDatabaseMetaData() {
         try {
             DatabaseMetaData databaseMetaData = databaseHelper.getConnection().getMetaData();
@@ -271,6 +308,10 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * builds a table view of a sql result set and adds it to tab panel
+     * @param resultSet sql result set
+     */
     private void buildTableData(ResultSet resultSet) {
         ObservableList<ObservableList> observableList = FXCollections.observableArrayList();
         TableView tableView = new TableView();
@@ -313,10 +354,19 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * appends a message to log area
+     * @param message message to append
+     */
     private void writeLog(String message) {
         log.appendText(message + "\n");
     }
 
+    /**
+     * appends a formatted message to log area
+     * @param formattedMessage formatted message to append
+     * @param params parameters for formatted message
+     */
     private void writeLog(String formattedMessage, Object... params) {
         log.appendText(String.format(formattedMessage, params) + "\n");
     }

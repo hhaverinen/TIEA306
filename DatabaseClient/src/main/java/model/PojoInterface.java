@@ -18,6 +18,8 @@ package main.java.model;
 
 /**
  * Created by Henri on 24.4.2016.
+ *
+ * Simple interface for making cleaner code
  */
 public interface PojoInterface {
 

@@ -20,15 +20,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.util.Callback;
 import main.java.helper.FileHelper;
 import main.java.model.ConnectionPOJO;
 import main.java.model.Context;
 import main.java.model.DriverPOJO;
 
-import java.awt.*;
 import java.net.URL;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +46,11 @@ public class AliasWindowController implements Initializable {
     @FXML
     private PasswordField passwordField;
 
+    /**
+     * makes bindings between pojo lists and combo boxes
+     * @param url not used
+     * @param resourceBundle not used
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // make bindings
@@ -56,6 +58,10 @@ public class AliasWindowController implements Initializable {
         aliasBox.itemsProperty().bind(Context.getInstance().getConnections());
     }
 
+    /**
+     * adds a new alias
+     * @param event not used
+     */
     @FXML
     private void addAlias(ActionEvent event) {
         String aliasNameFieldText = aliasNameField.getText();
@@ -78,6 +84,10 @@ public class AliasWindowController implements Initializable {
         }
     }
 
+    /**
+     * modifies existing alias
+     * @param event not used
+     */
     @FXML
     private void modifyAlias(ActionEvent event) {
         ConnectionPOJO connectionPOJO = (ConnectionPOJO) aliasBox.getSelectionModel().getSelectedItem();
@@ -107,6 +117,10 @@ public class AliasWindowController implements Initializable {
         }
     }
 
+    /**
+     * deletes existing alias
+     * @param event
+     */
     @FXML
     private void deleteAlias(ActionEvent event) {
         ConnectionPOJO connectionPOJO = (ConnectionPOJO) aliasBox.getSelectionModel().getSelectedItem();
@@ -131,6 +145,10 @@ public class AliasWindowController implements Initializable {
         }
     }
 
+    /**
+     * loads alias's data to field when user selects it from the combo box
+     * @param event
+     */
     @FXML
     private void selectAlias(ActionEvent event) {
         ConnectionPOJO connectionPOJO = (ConnectionPOJO) aliasBox.getSelectionModel().getSelectedItem();
@@ -141,6 +159,10 @@ public class AliasWindowController implements Initializable {
         passwordField.setText(connectionPOJO.getPassword());
     }
 
+    /**
+     * checks that all fields are filled
+     * @return true if everything is filled, false otherwise
+     */
     private boolean checkFields() {
         return (!aliasNameField.getText().isEmpty() && driverBox.getSelectionModel().getSelectedItem()
                 != null && !urlField.getText().isEmpty() && !userField.getText().isEmpty()

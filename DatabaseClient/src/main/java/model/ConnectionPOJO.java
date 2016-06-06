@@ -18,6 +18,8 @@ package main.java.model;
 
 /**
  * Created by Henri on 18.3.2016.
+ *
+ * Model for connection
  */
 public class ConnectionPOJO implements PojoInterface {
 

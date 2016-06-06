@@ -21,21 +21,23 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import main.java.controller.MainController;
-import main.java.model.ConnectionPOJO;
-import main.java.model.Context;
 
 /**
  * Created by Henri on 4.3.2016.
+ *
+ * Main class, sets resources and starts the application
  */
 public class Main extends Application {
 
     private MainController mainController;
 
+    /**
+     * starts the application
+     * @param primaryStage primary stage of the application
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
@@ -48,6 +50,10 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    /**
+     * stops application, also makes sure that database connection is closed
+     * @throws Exception
+     */
     @Override
     public void stop() throws Exception {
         super.stop();

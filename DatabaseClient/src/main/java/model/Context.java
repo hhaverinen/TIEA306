@@ -23,11 +23,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import main.java.helper.FileHelper;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 /**
  * Created by Henri on 18.3.2016.
+ *
+ * Singleton that holds data about saved connections and drivers
  */
 public class Context {
 

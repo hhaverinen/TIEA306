@@ -24,6 +24,8 @@ import main.java.model.PojoInterface;
 
 /**
  * Created by Henri on 24.4.2016.
+ *
+ * Custom ComboBox for rendering data of pojos
  */
 public class PojoComboBox extends ComboBox {
 
@@ -32,6 +34,9 @@ public class PojoComboBox extends ComboBox {
         this.initLookAndFeel();
     }
 
+    /**
+     * sets behaviour of ComboBox, shows pojo's name in list and selection
+     */
     private void initLookAndFeel() {
         this.setCellFactory(new Callback<ListView<PojoInterface>, ListCell<PojoInterface>>() {
             @Override
