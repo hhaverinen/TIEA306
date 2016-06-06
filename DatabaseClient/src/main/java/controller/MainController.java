@@ -21,6 +21,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -37,18 +38,17 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import main.java.Main;
 import main.java.helper.FileHelper;
 import main.java.model.ConnectionPOJO;
 import main.java.helper.DatabaseHelper;
 import main.java.model.Context;
-import main.java.model.DriverPOJO;
+import org.fxmisc.richtext.CodeArea;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 /**
@@ -56,7 +56,7 @@ import java.util.ResourceBundle;
  */
 public class MainController implements Initializable {
     @FXML
-    private TextArea queryArea, log;
+    private TextArea log;
     @FXML
     private TextField databaseUrl, databaseUser, databasePassword;
     @FXML
@@ -65,20 +65,29 @@ public class MainController implements Initializable {
     private AnchorPane metadataPane;
     @FXML
     public ComboBox connectionsComboBox;
+    @FXML
+    public SplitPane mainArea;
 
     public DatabaseHelper databaseHelper;
+    public CodeArea queryArea;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // make binding
         connectionsComboBox.itemsProperty().bind(Context.getInstance().getConnections());
-    }
 
-    @FXML
-    protected void queryAreaOnKeyPress(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER && event.isControlDown()) {
-            runQuery(new ActionEvent());
-        }
+        queryArea = new CodeArea();
+        queryArea.setParagraphStyle(0, Collections.singletonList("has-caret"));
+        queryArea.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER && event.isControlDown()) {
+                    runQuery(new ActionEvent());
+                }
+            }
+        });
+
+        mainArea.getItems().add(0, queryArea);
     }
 
     @FXML

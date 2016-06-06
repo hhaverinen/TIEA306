@@ -42,7 +42,9 @@ public class Main extends Application {
         Parent root = loader.load(getClass().getResource("/main/resources/base.fxml").openStream());
         mainController = loader.getController();
         primaryStage.setTitle("DatabaseClient");
-        primaryStage.setScene(new Scene(root, 1200, 800));
+        Scene scene = new Scene(root, 1200, 800);
+        scene.getStylesheets().add("/main/resources/styles.css");
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
