@@ -1,16 +1,14 @@
--Generate sql clause that copies resultset/table/whole db?
--Alias-window's driver dropbox's selected item won't render name properly
+Fixes:
 -Alias-window's alias dropbox's selected item wont' render name properly after update
 (renders correcly after selecting other alias and then selecting the modified alias again)
--UI feedback for error's when adding/modifying aliases
+
+Features:
+-Generate sql clause that copies resultset/table/whole db?
 -Execute sql queries straight from file
--Multiline support
--Execute only selected(row) sql
+-Multiline support (TODO: check if newlines need to be replaced by empty space for sql queries to work)
 -Possibility to write comments to sql sheet
 -Support for several sql work sheets?
 -Support for several connections (tabbed or dropbox selection which db is queried)?
--Disable connection button when connection is established?
--Better metadata panel
 -Possibility to select, copy, do stuff with metadata panel
 -Possibility to select and copy results to clipboard from generated tableview
 -Possibility to execute multiple queries once (seperated with ;?)
@@ -18,5 +16,17 @@
 -Support for different databases (mysql works. postgresql queries work but metadata doesn't)
 -Auto completion (default: ctrl + space) for sql keywords and tables/fields after connected to database
 -Keep history of executed queries (dropdown + selection?)
--Nice images and tooltip texts for buttons?
 -Undo and redo actions
+
+UI stuff:
+-UI feedback for error's when adding/modifying aliases
+-Nicer looking metadata panel and UI fix (doesn't stretch to parent container)
+-QueryArea does not have/show scrollbars
+-Nice images and tooltip texts for buttons?
+-Overall styles
+
+Something else:
+-Disable connection button when connection is established?
+
+
+

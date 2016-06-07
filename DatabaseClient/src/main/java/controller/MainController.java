@@ -104,7 +104,7 @@ public class MainController implements Initializable {
     @FXML
     protected void runQuery(ActionEvent event) {
         try {
-            String query = queryArea.getText();
+            String query = (!queryArea.getSelectedText().equals("")) ? queryArea.getSelectedText() : queryArea.getText(queryArea.getCurrentParagraph());
             ResultSet resultSet = null;
             int affectedRows = 0;
             String queryType = query.split(" ")[0];

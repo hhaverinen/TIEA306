@@ -104,7 +104,7 @@ public class AliasWindowController implements Initializable {
                 connectionPOJO.setDatabaseUrl(urlField.getText());
                 connectionPOJO.setDriver(((DriverPOJO) driverBox.getSelectionModel().getSelectedItem()));
                 connectionPOJO.setUsername(userField.getText());
-                connectionPOJO.setPassword(userField.getText());
+                connectionPOJO.setPassword(passwordField.getText());
 
                 FileHelper helper = new FileHelper();
                 List<ConnectionPOJO> pojos =  Context.getInstance().getConnections().get().stream().collect(Collectors.toList());
@@ -119,7 +119,7 @@ public class AliasWindowController implements Initializable {
 
     /**
      * deletes existing alias
-     * @param event
+     * @param event not used
      */
     @FXML
     private void deleteAlias(ActionEvent event) {
@@ -147,7 +147,7 @@ public class AliasWindowController implements Initializable {
 
     /**
      * loads alias's data to field when user selects it from the combo box
-     * @param event
+     * @param event not used
      */
     @FXML
     private void selectAlias(ActionEvent event) {

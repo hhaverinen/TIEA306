@@ -47,4 +47,16 @@ public class DriverPOJO implements PojoInterface {
         this.name = name;
     }
 
+    /**
+     * custom equals method to get ComboBox selection working
+     * @param obj object to compare
+     * @return boolean if object matches
+     */
+    @Override
+    public boolean equals(Object obj) {
+        DriverPOJO pojo = (DriverPOJO)obj;
+        if (pojo != null)
+            return (pojo.getName().equals(name) && pojo.getPathToJar().equals(pathToJar)) ? true : false;
+        return false;
+    }
 }
