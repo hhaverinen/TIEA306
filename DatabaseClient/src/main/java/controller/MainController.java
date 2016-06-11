@@ -32,6 +32,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -42,6 +44,7 @@ import main.java.helper.FileHelper;
 import main.java.model.ConnectionPOJO;
 import main.java.helper.DatabaseHelper;
 import main.java.model.Context;
+import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 
 import java.io.File;
@@ -75,6 +78,7 @@ public class MainController implements Initializable {
 
     /**
      * initializes queryArea and makes bindings
+     * RichTextFX doesn't support fxml so we need to initialize those components in code
      * @param url not used
      * @param resourceBundle not used
      */
@@ -83,18 +87,17 @@ public class MainController implements Initializable {
         // make binding
         connectionsComboBox.itemsProperty().bind(Context.getInstance().getConnections());
 
+        // init queryArea
         queryArea = new CodeArea();
         queryArea.setParagraphStyle(0, Collections.singletonList("has-caret"));
-        queryArea.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.ENTER && event.isControlDown()) {
-                    runQuery(new ActionEvent());
-                }
+        queryArea.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER && event.isControlDown()) {
+                runQuery(new ActionEvent());
             }
         });
 
-        mainArea.getItems().add(0, queryArea);
+        VirtualizedScrollPane sp = new VirtualizedScrollPane(queryArea);
+        mainArea.getItems().add(0, sp);
     }
 
     /**
@@ -110,7 +113,8 @@ public class MainController implements Initializable {
             String queryType = query.split(" ")[0];
             if (queryType.equalsIgnoreCase("select")) {
                 resultSet = databaseHelper.executeQuery(query);
-            } else if (queryType.equalsIgnoreCase("insert") || queryType.equalsIgnoreCase("update") || queryType.equalsIgnoreCase("delete")){
+            // is this check really needed?
+            } else if (queryType.equalsIgnoreCase("insert") || queryType.equalsIgnoreCase("update") || queryType.equalsIgnoreCase("delete") || queryType.equalsIgnoreCase("alter")){
                 affectedRows = databaseHelper.executeUpdate(query);
             } else {
                 writeLog("Query type %s is not supported. Use select, insert, update or delete.", queryType);

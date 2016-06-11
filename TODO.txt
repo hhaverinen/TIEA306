@@ -21,7 +21,6 @@ Features:
 UI stuff:
 -UI feedback for error's when adding/modifying aliases
 -Nicer looking metadata panel and UI fix (doesn't stretch to parent container)
--QueryArea does not have/show scrollbars
 -Nice images and tooltip texts for buttons?
 -Overall styles
 
