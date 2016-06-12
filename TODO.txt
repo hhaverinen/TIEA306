@@ -5,18 +5,16 @@ Fixes:
 Features:
 -Generate sql clause that copies resultset/table/whole db?
 -Execute sql queries straight from file
--Multiline support (TODO: check if newlines need to be replaced by empty space for sql queries to work)
+-Multiline support (works almost?)
 -Possibility to write comments to sql sheet
 -Support for several sql work sheets?
 -Support for several connections (tabbed or dropbox selection which db is queried)?
 -Possibility to select, copy, do stuff with metadata panel
--Possibility to select and copy results to clipboard from generated tableview
 -Possibility to execute multiple queries once (seperated with ;?)
 -Possibility to select seperator, commentmark etc from settings
 -Support for different databases (mysql works. postgresql queries work but metadata doesn't)
 -Auto completion (default: ctrl + space) for sql keywords and tables/fields after connected to database
 -Keep history of executed queries (dropdown + selection?)
--Undo and redo actions
 
 UI stuff:
 -UI feedback for error's when adding/modifying aliases

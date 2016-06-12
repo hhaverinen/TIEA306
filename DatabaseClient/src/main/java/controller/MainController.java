@@ -21,7 +21,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,10 +29,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -52,6 +48,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -319,6 +316,7 @@ public class MainController implements Initializable {
     private void buildTableData(ResultSet resultSet) {
         ObservableList<ObservableList> observableList = FXCollections.observableArrayList();
         TableView tableView = new TableView();
+        tableView.getSelectionModel().setCellSelectionEnabled(true);
         try {
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
             for (int i = 0; i < resultSetMetaData.getColumnCount(); i++) {
@@ -343,6 +341,22 @@ public class MainController implements Initializable {
             }
 
             tableView.setItems(observableList);
+
+            // add CTRL + C listener
+            tableView.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.C && event.isControlDown()) {
+                    //get position of selected cell
+                    TablePosition tablePosition = tableView.getFocusModel().getFocusedCell();
+                    // get data of selected row
+                    List<String> selectedRow = (List)tableView.getSelectionModel().getSelectedItem();
+                    // get data of selected cell
+                    String cellText = selectedRow.get(tablePosition.getColumn()).toString();
+                    // store data to clipboard
+                    ClipboardContent content = new ClipboardContent();
+                    content.putString(cellText);
+                    Clipboard.getSystemClipboard().setContent(content);
+                }
+            });
 
             // add table to new tab and select it
             Tab tab = new Tab("Resultset " + (resultsTabPane.getTabs().size() + 1));
