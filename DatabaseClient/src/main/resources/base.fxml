@@ -32,6 +32,7 @@
   -->
 
 <?import main.java.component.PojoComboBox?>
+<?import javafx.scene.layout.StackPane?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.MainController">
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -41,11 +42,20 @@
                   <SplitPane dividerPositions="0.1" prefHeight="350.0" prefWidth="200.0">
                      <items>
                         <AnchorPane fx:id="metadataPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false" />
-                        <SplitPane dividerPositions="0.2" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" fx:id="mainArea">
-                           <items>
-                              <TabPane fx:id="resultsTabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" />
-                           </items>
-                        </SplitPane>
+                        <BorderPane >
+                            <top>
+                                <AnchorPane>
+                                    <ComboBox AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0" fx:id="queryHistoryComboBox"/>
+                                </AnchorPane>
+                            </top>
+                            <center>
+                                 <SplitPane dividerPositions="0.2" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" fx:id="mainArea">
+                                   <items>
+                                      <TabPane fx:id="resultsTabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" />
+                                   </items>
+                                </SplitPane>
+                            </center>
+                        </BorderPane>
                      </items>
                   </SplitPane>
                   <TextArea fx:id="log" editable="false" prefHeight="50.0" prefWidth="200.0" SplitPane.resizableWithParent="false" />
