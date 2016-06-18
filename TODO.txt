@@ -4,7 +4,6 @@ Fixes:
 
 Features:
 -Generate sql clause that copies resultset/table/whole db?
--Execute sql queries straight from file
 -Multiline support (works almost?)
 -Possibility to write comments to sql sheet
 -Support for several sql work sheets?
@@ -16,7 +15,6 @@ Features:
 -Auto completion (default: ctrl + space) for sql keywords and tables/fields after connected to database
 
 UI stuff:
--UI feedback for error's when adding/modifying aliases
 -Nicer looking metadata panel and UI fix (doesn't stretch to parent container)
 -Scrollbars don't move correctly when resizing window
 -Nice images and tooltip texts for buttons?

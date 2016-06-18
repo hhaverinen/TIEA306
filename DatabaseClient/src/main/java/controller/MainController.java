@@ -45,6 +45,7 @@ import main.java.model.Context;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -99,7 +100,7 @@ public class MainController implements Initializable {
         queryArea.setParagraphStyle(0, Collections.singletonList("has-caret"));
         queryArea.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER && event.isControlDown()) {
-                runQuery(new ActionEvent());
+                invokeRunQuery(new ActionEvent());
             }
         });
 
@@ -111,13 +112,22 @@ public class MainController implements Initializable {
     }
 
     /**
-     * executes a sql query
-     * @param event not used
+     * gets sql query from queryArea and executes it
+     * @param event
      */
     @FXML
-    protected void runQuery(ActionEvent event) {
+    protected void invokeRunQuery(ActionEvent event) {
+        String query = (!queryArea.getSelectedText().equals("")) ? queryArea.getSelectedText() : queryArea.getText(queryArea.getCurrentParagraph());
+        runQuery(query);
+    }
+
+    /**
+     * executes a sql query
+     * @param query sql query to be executed
+     */
+    @FXML
+    protected void runQuery(String query) {
         try {
-            String query = (!queryArea.getSelectedText().equals("")) ? queryArea.getSelectedText() : queryArea.getText(queryArea.getCurrentParagraph());
             // for testing without db
             queryHistoryComboBox.getItems().add(query);
             ResultSet resultSet = null;
@@ -233,6 +243,28 @@ public class MainController implements Initializable {
                 writeLog("Save completed");
             } catch (IOException|SQLException e){
                 writeLog("Saving failed, error message: %s", e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * executes sql query straight from file
+     * @param event not used
+     */
+    @FXML
+    protected void runSqlFromFile(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose sql file to execute");
+        Stage stage = new Stage();
+        File file = fileChooser.showOpenDialog(stage);
+        if (file != null) {
+            try {
+                FileHelper fileHelper = new FileHelper();
+                String query = fileHelper.readTextFromFile(file);
+                writeLog("Read completed");
+                runQuery(query);
+            } catch (IOException e){
+                writeLog("Reading failed, error message: %s", e.getMessage());
             }
         }
     }

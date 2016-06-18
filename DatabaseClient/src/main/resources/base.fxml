@@ -76,10 +76,11 @@
                   </HBox>
                   <HBox prefHeight="30.0" prefWidth="600.0" spacing="5">
                       <children>
-                          <Button mnemonicParsing="false" onAction="#runQuery" text="Run query" />
+                          <Button mnemonicParsing="false" onAction="#invokeRunQuery" text="Run query" />
                           <Button mnemonicParsing="false" onAction="#openSqlFile" text="Open sql file" />
                           <Button mnemonicParsing="false" onAction="#saveSqlSheet" text="Save sql clauses to file" />
                           <Button mnemonicParsing="false" onAction="#exportResultsToFile" text="Export query results to file" />
+                          <Button mnemonicParsing="false" onAction="#runSqlFromFile" text="Run sql from file" />
                       </children>
                   </HBox>
                </children>
