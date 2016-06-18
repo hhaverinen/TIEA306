@@ -16,7 +16,9 @@
 
 package main.java.controller;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,6 +38,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import main.java.component.PojoComboBox;
 import main.java.helper.FileHelper;
 import main.java.model.ConnectionPOJO;
 import main.java.helper.DatabaseHelper;
@@ -47,6 +50,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -66,23 +70,31 @@ public class MainController implements Initializable {
     @FXML
     private AnchorPane metadataPane;
     @FXML
-    public ComboBox connectionsComboBox;
+    private PojoComboBox connectionsComboBox;
     @FXML
-    public SplitPane mainArea;
+    private ComboBox<String> queryHistoryComboBox;
+    @FXML
+    private SplitPane mainArea;
 
+    // should this be private and provide getter instead?
     public DatabaseHelper databaseHelper;
-    public CodeArea queryArea;
+    private CodeArea queryArea;
 
     /**
-     * initializes queryArea and makes bindings
+     * initializes queryArea and makes bindings and event handlers
      * RichTextFX doesn't support fxml so we need to initialize those components in code
      * @param url not used
      * @param resourceBundle not used
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // make binding
+        // make bindings
         connectionsComboBox.itemsProperty().bind(Context.getInstance().getConnections());
+
+        // selected object, old value, new value
+        queryHistoryComboBox.valueProperty().addListener((observableValue, oldValue, newValue) -> {
+            queryArea.appendText("\n\n" + newValue);
+        });
 
         // init queryArea
         queryArea = new CodeArea();
@@ -105,6 +117,8 @@ public class MainController implements Initializable {
     protected void runQuery(ActionEvent event) {
         try {
             String query = (!queryArea.getSelectedText().equals("")) ? queryArea.getSelectedText() : queryArea.getText(queryArea.getCurrentParagraph());
+            // for testing without db
+            queryHistoryComboBox.getItems().add(query);
             ResultSet resultSet = null;
             int affectedRows = 0;
             String queryType = query.split(" ")[0];
@@ -122,6 +136,8 @@ public class MainController implements Initializable {
             } else {
                 writeLog("Query completed successfully. %s rows affected.", affectedRows);
             }
+
+            queryHistoryComboBox.getItems().add(query);
             databaseHelper.getStatement().close();
         } catch (Exception e) {
             e.printStackTrace();
