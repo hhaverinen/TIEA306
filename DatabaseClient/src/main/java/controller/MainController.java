@@ -17,9 +17,7 @@
 package main.java.controller;
 
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -51,7 +49,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -121,6 +118,8 @@ public class MainController implements Initializable {
     protected void runQuery(ActionEvent event) {
         try {
             String query = (!queryArea.getSelectedText().equals("")) ? queryArea.getSelectedText() : queryArea.getText(queryArea.getCurrentParagraph());
+            // for testing without db
+            queryHistoryComboBox.getItems().add(query);
             ResultSet resultSet = null;
             int affectedRows = 0;
             String queryType = query.split(" ")[0];
