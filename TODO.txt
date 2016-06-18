@@ -14,7 +14,6 @@ Features:
 -Possibility to select seperator, commentmark etc from settings
 -Support for different databases (mysql works. postgresql queries work but metadata doesn't)
 -Auto completion (default: ctrl + space) for sql keywords and tables/fields after connected to database
--Keep history of executed queries (dropdown + selection?)
 
 UI stuff:
 -UI feedback for error's when adding/modifying aliases

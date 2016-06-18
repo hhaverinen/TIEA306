@@ -16,11 +16,13 @@
 
 package main.java.controller;
 
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
+import main.java.component.PojoComboBox;
 import main.java.helper.FileHelper;
 import main.java.model.ConnectionPOJO;
 import main.java.model.Context;
@@ -38,7 +40,7 @@ import java.util.stream.Collectors;
 public class AliasWindowController implements Initializable {
 
     @FXML
-    public ComboBox driverBox, aliasBox;
+    public PojoComboBox driverBox, aliasBox;
 
     @FXML
     private TextField aliasNameField, urlField, userField;
@@ -46,9 +48,12 @@ public class AliasWindowController implements Initializable {
     @FXML
     private PasswordField passwordField;
 
+    private PseudoClass errorClass = PseudoClass.getPseudoClass("error");
+
     /**
      * makes bindings between pojo lists and combo boxes
-     * @param url not used
+     *
+     * @param url            not used
      * @param resourceBundle not used
      */
     @Override
@@ -60,6 +65,7 @@ public class AliasWindowController implements Initializable {
 
     /**
      * adds a new alias
+     *
      * @param event not used
      */
     @FXML
@@ -70,11 +76,11 @@ public class AliasWindowController implements Initializable {
         String userFieldText = userField.getText();
         String passwordFieldText = passwordField.getText();
 
-        if (checkFields()) {
+        if (validateFields()) {
             ConnectionPOJO cpojo = new ConnectionPOJO(aliasNameFieldText, driverBoxSelection, userFieldText, passwordFieldText, urlFieldText);
             Context.getInstance().getConnections().get().add(cpojo);
             FileHelper helper = new FileHelper();
-            List<ConnectionPOJO> pojos =  Context.getInstance().getConnections().get().stream().collect(Collectors.toList());
+            List<ConnectionPOJO> pojos = Context.getInstance().getConnections().get().stream().collect(Collectors.toList());
             try {
                 helper.writeObjectsToJsonFile(pojos, "conf/aliases.json");
                 aliasBox.getSelectionModel().select(cpojo);
@@ -86,32 +92,35 @@ public class AliasWindowController implements Initializable {
 
     /**
      * modifies existing alias
+     *
      * @param event not used
      */
     @FXML
     private void modifyAlias(ActionEvent event) {
-        ConnectionPOJO connectionPOJO = (ConnectionPOJO) aliasBox.getSelectionModel().getSelectedItem();
+        if (validateComboBox(aliasBox)) {
+            ConnectionPOJO connectionPOJO = (ConnectionPOJO) aliasBox.getSelectionModel().getSelectedItem();
 
-        if (connectionPOJO != null && checkFields()) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Modify confirmation");
-            alert.setHeaderText("Are you sure you want to modify alias '" + connectionPOJO.getName() + "'");
-            alert.setContentText("If you are, just hit the OK!");
-            Optional<ButtonType> result = alert.showAndWait();
+            if (connectionPOJO != null && validateFields()) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Modify confirmation");
+                alert.setHeaderText("Are you sure you want to modify alias '" + connectionPOJO.getName() + "'");
+                alert.setContentText("If you are, just hit the OK!");
+                Optional<ButtonType> result = alert.showAndWait();
 
-            if (result.get() == ButtonType.OK) {
-                connectionPOJO.setName(aliasNameField.getText());
-                connectionPOJO.setDatabaseUrl(urlField.getText());
-                connectionPOJO.setDriver(((DriverPOJO) driverBox.getSelectionModel().getSelectedItem()));
-                connectionPOJO.setUsername(userField.getText());
-                connectionPOJO.setPassword(passwordField.getText());
+                if (result.get() == ButtonType.OK) {
+                    connectionPOJO.setName(aliasNameField.getText());
+                    connectionPOJO.setDatabaseUrl(urlField.getText());
+                    connectionPOJO.setDriver(((DriverPOJO) driverBox.getSelectionModel().getSelectedItem()));
+                    connectionPOJO.setUsername(userField.getText());
+                    connectionPOJO.setPassword(passwordField.getText());
 
-                FileHelper helper = new FileHelper();
-                List<ConnectionPOJO> pojos =  Context.getInstance().getConnections().get().stream().collect(Collectors.toList());
-                try {
-                    helper.writeObjectsToJsonFile(pojos, "conf/aliases.json");
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    FileHelper helper = new FileHelper();
+                    List<ConnectionPOJO> pojos = Context.getInstance().getConnections().get().stream().collect(Collectors.toList());
+                    try {
+                        helper.writeObjectsToJsonFile(pojos, "conf/aliases.json");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -119,27 +128,30 @@ public class AliasWindowController implements Initializable {
 
     /**
      * deletes existing alias
+     *
      * @param event not used
      */
     @FXML
     private void deleteAlias(ActionEvent event) {
-        ConnectionPOJO connectionPOJO = (ConnectionPOJO) aliasBox.getSelectionModel().getSelectedItem();
+        if(validateComboBox(aliasBox)) {
+            ConnectionPOJO connectionPOJO = (ConnectionPOJO) aliasBox.getSelectionModel().getSelectedItem();
 
-        if (connectionPOJO != null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Delete confirmation");
-            alert.setHeaderText("Are you sure you want to delete alias '" + connectionPOJO.getName() + "'");
-            alert.setContentText("If you are, just hit the OK!");
-            Optional<ButtonType> result = alert.showAndWait();
+            if (connectionPOJO != null) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Delete confirmation");
+                alert.setHeaderText("Are you sure you want to delete alias '" + connectionPOJO.getName() + "'");
+                alert.setContentText("If you are, just hit the OK!");
+                Optional<ButtonType> result = alert.showAndWait();
 
-            if (result.get() == ButtonType.OK) {
-                Context.getInstance().getConnections().get().remove(connectionPOJO);
-                FileHelper helper = new FileHelper();
-                List<ConnectionPOJO> pojos =  Context.getInstance().getConnections().get().stream().collect(Collectors.toList());
-                try {
-                    helper.writeObjectsToJsonFile(pojos, "conf/aliases.json");
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (result.get() == ButtonType.OK) {
+                    Context.getInstance().getConnections().get().remove(connectionPOJO);
+                    FileHelper helper = new FileHelper();
+                    List<ConnectionPOJO> pojos = Context.getInstance().getConnections().get().stream().collect(Collectors.toList());
+                    try {
+                        helper.writeObjectsToJsonFile(pojos, "conf/aliases.json");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -147,13 +159,14 @@ public class AliasWindowController implements Initializable {
 
     /**
      * loads alias's data to field when user selects it from the combo box
+     *
      * @param event not used
      */
     @FXML
     private void selectAlias(ActionEvent event) {
         ConnectionPOJO connectionPOJO = (ConnectionPOJO) aliasBox.getSelectionModel().getSelectedItem();
         aliasNameField.setText(connectionPOJO.getName());
-        driverBox.getSelectionModel().select(connectionPOJO.getDriver()); // FIXME does not select correct object
+        driverBox.getSelectionModel().select(connectionPOJO.getDriver());
         urlField.setText(connectionPOJO.getDatabaseUrl());
         userField.setText(connectionPOJO.getUsername());
         passwordField.setText(connectionPOJO.getPassword());
@@ -161,12 +174,44 @@ public class AliasWindowController implements Initializable {
 
     /**
      * checks that all fields are filled
+     *
      * @return true if everything is filled, false otherwise
      */
-    private boolean checkFields() {
-        return (!aliasNameField.getText().isEmpty() && driverBox.getSelectionModel().getSelectedItem()
-                != null && !urlField.getText().isEmpty() && !userField.getText().isEmpty()
-                && !passwordField.getText().isEmpty());
+    private boolean validateFields() {
+        // do it like this, so that every field gets validated and assigned correct pseudoclass
+        boolean isAliasOk = validateTextField(aliasNameField);
+        boolean isDriverOk = validateComboBox(driverBox);
+        boolean isUrlOk = validateTextField(urlField);
+        boolean isUserOk = validateTextField(userField);
+        boolean isPasswordOk = validateTextField(passwordField);
+
+        return (isAliasOk && isDriverOk && isUrlOk && isUserOk && isPasswordOk);
+    }
+
+    /**
+     * checks if textfield is empty and sets error class depending of result
+     *
+     * @param textField textfield to validate
+     * @return true if textField is not empty, false otherwise
+     */
+    private boolean validateTextField(TextField textField) {
+        if (!textField.getText().isEmpty()) {
+            textField.pseudoClassStateChanged(errorClass, false);
+            return true;
+        } else {
+            textField.pseudoClassStateChanged(errorClass, true);
+            return false;
+        }
+    }
+
+    private boolean validateComboBox(ComboBox comboBox) {
+        if(comboBox.getSelectionModel().getSelectedItem() != null) {
+            comboBox.pseudoClassStateChanged(errorClass, false);
+            return true;
+        } else {
+            comboBox.pseudoClassStateChanged(errorClass, true);
+            return false;
+        }
     }
 
 }

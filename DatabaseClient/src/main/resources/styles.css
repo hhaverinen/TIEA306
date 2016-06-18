@@ -19,3 +19,13 @@
 .paragraph-box:has-caret {
     -fx-background-color: #f2f9fc;
 }
+
+.text-field:error {
+    -fx-text-box-border: red;
+    -fx-focus-color: red;
+}
+
+.combo-box:error > .list-cell {
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+}

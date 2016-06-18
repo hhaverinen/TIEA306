@@ -16,6 +16,7 @@
 
 package main.java.controller;
 
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleObjectProperty;
@@ -76,7 +77,7 @@ public class MainController implements Initializable {
     @FXML
     private SplitPane mainArea;
 
-    // should this be private and provide getter instead?
+    // should be in context singleton!
     public DatabaseHelper databaseHelper;
     private CodeArea queryArea;
 
@@ -107,6 +108,9 @@ public class MainController implements Initializable {
 
         VirtualizedScrollPane sp = new VirtualizedScrollPane(queryArea);
         mainArea.getItems().add(0, sp);
+
+        // set focus on queryArea
+        Platform.runLater(() -> queryArea.requestFocus());
     }
 
     /**
@@ -117,8 +121,6 @@ public class MainController implements Initializable {
     protected void runQuery(ActionEvent event) {
         try {
             String query = (!queryArea.getSelectedText().equals("")) ? queryArea.getSelectedText() : queryArea.getText(queryArea.getCurrentParagraph());
-            // for testing without db
-            queryHistoryComboBox.getItems().add(query);
             ResultSet resultSet = null;
             int affectedRows = 0;
             String queryType = query.split(" ")[0];
@@ -269,6 +271,7 @@ public class MainController implements Initializable {
         try {
             Parent window = FXMLLoader.load(getClass().getResource("/main/resources/alias_window.fxml"));
             Scene scene = new Scene(window, 400, 200);
+            scene.getStylesheets().add("/main/resources/styles.css");
             Stage windowStage = new Stage();
 
             windowStage.initModality(Modality.APPLICATION_MODAL);
