@@ -5,7 +5,6 @@ Fixes:
 Features:
 -Generate sql clause that copies resultset/table/whole db?
 -Multiline support (works almost?)
--Possibility to write comments to sql sheet
 -Support for several sql work sheets?
 -Support for several connections (tabbed or dropbox selection which db is queried)?
 -Possibility to select, copy, do stuff with metadata panel

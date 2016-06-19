@@ -48,7 +48,7 @@ public class AliasWindowController implements Initializable {
     @FXML
     private PasswordField passwordField;
 
-    private PseudoClass errorClass = PseudoClass.getPseudoClass("error");
+    private static final PseudoClass errorClass = PseudoClass.getPseudoClass("error");
 
     /**
      * makes bindings between pojo lists and combo boxes

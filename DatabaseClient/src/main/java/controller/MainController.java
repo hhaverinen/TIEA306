@@ -21,6 +21,7 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,15 +45,21 @@ import main.java.helper.DatabaseHelper;
 import main.java.model.Context;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.Paragraph;
+import org.fxmisc.richtext.StyleSpans;
+import org.fxmisc.richtext.StyleSpansBuilder;
+import org.reactfx.collection.LiveArrayList;
+import org.reactfx.collection.LiveList;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Henri on 4.3.2016.
@@ -79,9 +86,11 @@ public class MainController implements Initializable {
     public DatabaseHelper databaseHelper;
     private CodeArea queryArea;
 
+    private static String COMMENTMARK = "--";
+
     /**
      * initializes queryArea and makes bindings and event handlers
-     * RichTextFX doesn't support fxml so we need to initialize those components in code
+     * RichTextFX doesn't support fxml so we need to initialize thoabout:startpagese components in code
      * @param url not used
      * @param resourceBundle not used
      */
@@ -97,11 +106,13 @@ public class MainController implements Initializable {
 
         // init queryArea
         queryArea = new CodeArea();
-        queryArea.setParagraphStyle(0, Collections.singletonList("has-caret"));
         queryArea.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER && event.isControlDown()) {
                 invokeRunQuery(new ActionEvent());
             }
+        });
+        queryArea.textProperty().addListener((observableValue, oldValue, newValue) -> {
+            queryArea.setStyleSpans(0, setQueryAreaCommentStyles(queryArea.getText()));
         });
 
         VirtualizedScrollPane sp = new VirtualizedScrollPane(queryArea);
@@ -112,20 +123,49 @@ public class MainController implements Initializable {
     }
 
     /**
+     * sets styles to comments in query area
+     * a lot of reference was taken from RichTextFX demos, see
+     * https://github.com/TomasMikula/RichTextFX/blob/master/richtextfx-demos/src/main/java/org/fxmisc/richtext/demo/JavaKeywords.java
+     * @return returns StyleSpans including styles for queryarea
+     */
+    private StyleSpans<Collection<String>> setQueryAreaCommentStyles(String text) {
+        Matcher commentMatcher = Pattern.compile(COMMENTMARK + "[^\n]*").matcher(text);
+        StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
+        int lastCommentEnd = 0;
+        while(commentMatcher.find()) {
+            // "moves cursor" where to start adding new styles
+            spansBuilder.add(Collections.emptyList(), commentMatcher.start() - lastCommentEnd);
+            spansBuilder.add(Collections.singleton("comment"), commentMatcher.end() - commentMatcher.start());
+            lastCommentEnd = commentMatcher.end();
+        }
+        spansBuilder.add(Collections.emptyList(), text.length() - lastCommentEnd);
+        return spansBuilder.create();
+    }
+
+    /**
      * gets sql query from queryArea and executes it
      * @param event
      */
     @FXML
     protected void invokeRunQuery(ActionEvent event) {
         String query = (!queryArea.getSelectedText().equals("")) ? queryArea.getSelectedText() : queryArea.getText(queryArea.getCurrentParagraph());
+        query = removeCommentsFromQuery(query);
         runQuery(query);
+    }
+
+    /**
+     * removes comments from query text
+     * @param query query text where to remove comments
+     * @return returns text where comments has been removed
+     */
+    private String removeCommentsFromQuery(String query) {
+        return query.split(COMMENTMARK)[0];
     }
 
     /**
      * executes a sql query
      * @param query sql query to be executed
      */
-    @FXML
     protected void runQuery(String query) {
         try {
             // for testing without db
