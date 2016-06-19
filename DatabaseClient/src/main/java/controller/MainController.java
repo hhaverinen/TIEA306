@@ -79,8 +79,7 @@ public class MainController implements Initializable {
     @FXML
     private ComboBox activeConnectionsComboBox;
 
-    // should be in context singleton!
-    public DatabaseHelper databaseHelper;
+    private DatabaseHelper currentDatabaseConnection;
     private CodeArea queryArea;
 
     private static String COMMENTMARK = "--";
@@ -95,23 +94,34 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // make bindings
         connectionsComboBox.itemsProperty().bind(Context.getInstance().getConnections());
+        activeConnectionsComboBox.itemsProperty().bind(Context.getInstance().getActiveConnections());
 
-        // selected object, old value, new value
+        // save reference of selected active connection
+        activeConnectionsComboBox.valueProperty().addListener((observableValue, oldValue, newValue) -> {
+            currentDatabaseConnection = (DatabaseHelper) observableValue;
+        });
+
+        // append query to queryArea when query is selected from queryHistory comboBox
         queryHistoryComboBox.valueProperty().addListener((observableValue, oldValue, newValue) -> {
             queryArea.appendText("\n\n" + newValue);
         });
 
         // init queryArea
         queryArea = new CodeArea();
+
+        // CTRL + ENTER shortcut for running query
         queryArea.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER && event.isControlDown()) {
                 invokeRunQuery(new ActionEvent());
             }
         });
+
+        // text change listener for adding styles to comments in queryArea
         queryArea.textProperty().addListener((observableValue, oldValue, newValue) -> {
             queryArea.setStyleSpans(0, setQueryAreaCommentStyles(queryArea.getText()));
         });
 
+        // add scrollbars to queryArea
         VirtualizedScrollPane sp = new VirtualizedScrollPane(queryArea);
         mainArea.getItems().add(0, sp);
 
@@ -173,17 +183,15 @@ public class MainController implements Initializable {
      * @param query sql query to be executed
      */
     protected void runQuery(String query) {
+        ResultSet resultSet = null;
         try {
-            // for testing without db
-            queryHistoryComboBox.getItems().add(query);
-            ResultSet resultSet = null;
             int affectedRows = 0;
             String queryType = query.split(" ")[0];
             if (queryType.equalsIgnoreCase("select")) {
-                resultSet = databaseHelper.executeQuery(query);
+                resultSet = currentDatabaseConnection.executeQuery(query);
             // is this check really needed?
             } else if (queryType.equalsIgnoreCase("insert") || queryType.equalsIgnoreCase("update") || queryType.equalsIgnoreCase("delete") || queryType.equalsIgnoreCase("alter")){
-                affectedRows = databaseHelper.executeUpdate(query);
+                affectedRows = currentDatabaseConnection.executeUpdate(query);
             } else {
                 writeLog("Query type %s is not supported. Use select, insert, update or delete.", queryType);
                 return;
@@ -193,14 +201,20 @@ public class MainController implements Initializable {
             } else {
                 writeLog("Query completed successfully. %s rows affected.", affectedRows);
             }
-
             queryHistoryComboBox.getItems().add(query);
-            databaseHelper.getStatement().close();
         } catch (Exception e) {
             e.printStackTrace();
             if (e.getMessage() != null) {
                 writeLog(e.getMessage());
             } else { writeLog("An error happened"); }
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            currentDatabaseConnection.closeStatement();
+
         }
     }
 
@@ -257,13 +271,13 @@ public class MainController implements Initializable {
         fileChooser.setTitle("Choose file where to save");
         Stage stage = new Stage();
         File file = fileChooser.showSaveDialog(stage);
+        ResultSet resultSet = null;
         if (file != null) {
             try {
                 String query = queryArea.getText();
-                ResultSet resultSet = null;
                 String queryType = query.split(" ")[0];
                 if (queryType.equalsIgnoreCase("select")) {
-                    resultSet = databaseHelper.executeQuery(query);
+                    resultSet = currentDatabaseConnection.executeQuery(query);
                 } else {
                     writeLog("Use select clause to get data for saving");
                     return;
@@ -282,13 +296,18 @@ public class MainController implements Initializable {
                     results.append(System.lineSeparator());
                 }
 
-                databaseHelper.getStatement().close();
-
                 FileHelper fileHelper = new FileHelper();
                 fileHelper.writeTextToFile(file, results.toString());
                 writeLog("Save completed");
             } catch (IOException|SQLException e){
                 writeLog("Saving failed, error message: %s", e.getMessage());
+            } finally {
+                try {
+                    if (resultSet != null) resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                currentDatabaseConnection.closeStatement();
             }
         }
     }
@@ -327,7 +346,9 @@ public class MainController implements Initializable {
 
         if(!url.isEmpty() && !user.isEmpty() && !password.isEmpty()) {
             try {
-                databaseHelper = new DatabaseHelper(url, user, password);
+                currentDatabaseConnection = new DatabaseHelper(url, user, password);
+                activeConnectionsComboBox.getItems().add(currentDatabaseConnection);
+                activeConnectionsComboBox.getSelectionModel().select(currentDatabaseConnection);
                 writeLog("Successfully connected to " + url);
                 buildDatabaseMetaData();
             } catch (Exception e) {
@@ -376,7 +397,7 @@ public class MainController implements Initializable {
      */
     private void buildDatabaseMetaData() {
         try {
-            DatabaseMetaData databaseMetaData = databaseHelper.getConnection().getMetaData();
+            DatabaseMetaData databaseMetaData = currentDatabaseConnection.getDatabaseMetaData();
             ResultSet tables = databaseMetaData.getTables(null,null,null,null);
             VBox vBox = new VBox();
             AnchorPane.setTopAnchor(vBox,0.0);

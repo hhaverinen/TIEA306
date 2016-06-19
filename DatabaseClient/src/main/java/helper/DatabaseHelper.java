@@ -31,12 +31,10 @@ public class DatabaseHelper {
     private final int connectionTimeout = 10000;
     private final int socketTimeout = 10000;
 
-    public Connection getConnection() {
-        return connection;
-    }
+    private String url;
 
-    public Statement getStatement(){
-        return statement;
+    public String getUrl() {
+        return url;
     }
 
     /**
@@ -47,6 +45,8 @@ public class DatabaseHelper {
      * @throws Exception
      */
     public DatabaseHelper(String url, String user, String password) throws Exception {
+        // store url for showing in comboBox
+        this.url = url;
         //Class.forName("com.mysql.jdbc.Driver").newInstance(); // not needed?
         connection = DriverManager.getConnection(url + "?" + getTimeoutParams(connectionTimeout, socketTimeout), user, password);
     }
@@ -71,6 +71,38 @@ public class DatabaseHelper {
     public int executeUpdate(String query) throws SQLException {
         statement = connection.createStatement();
         return statement.executeUpdate(query);
+    }
+
+    /**
+     * closes statement of this object
+     */
+    public void closeStatement() {
+        try {
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * closes connection and statement of this object
+     */
+    public void closeConnection() {
+        try {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * method for getting database metadata
+     * @return returns object containing database metadata
+     * @throws SQLException
+     */
+    public DatabaseMetaData getDatabaseMetaData() throws SQLException {
+        return connection.getMetaData();
     }
 
     /**

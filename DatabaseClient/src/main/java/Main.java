@@ -23,6 +23,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import main.java.controller.MainController;
+import main.java.helper.DatabaseHelper;
+import main.java.model.Context;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by Henri on 4.3.2016.
@@ -58,11 +66,8 @@ public class Main extends Application {
     public void stop() throws Exception {
         super.stop();
 
-        // for now, ugly(?) way to close connection...
-        if(mainController.databaseHelper != null)
-            if(mainController.databaseHelper.getConnection() != null)
-                mainController.databaseHelper.getConnection().close();
-
+        Iterator<DatabaseHelper> iterator = Context.getInstance().getActiveConnections().get().iterator();
+        while(iterator.hasNext()) iterator.next().closeConnection();
     }
 
     public static void main(String[] args) { launch(args); }
