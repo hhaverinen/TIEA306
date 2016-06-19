@@ -21,7 +21,6 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,13 +44,9 @@ import main.java.helper.DatabaseHelper;
 import main.java.model.Context;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
-import org.fxmisc.richtext.Paragraph;
 import org.fxmisc.richtext.StyleSpans;
 import org.fxmisc.richtext.StyleSpansBuilder;
-import org.reactfx.collection.LiveArrayList;
-import org.reactfx.collection.LiveList;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -81,6 +76,8 @@ public class MainController implements Initializable {
     private ComboBox<String> queryHistoryComboBox;
     @FXML
     private SplitPane mainArea;
+    @FXML
+    private ComboBox activeConnectionsComboBox;
 
     // should be in context singleton!
     public DatabaseHelper databaseHelper;
@@ -90,7 +87,7 @@ public class MainController implements Initializable {
 
     /**
      * initializes queryArea and makes bindings and event handlers
-     * RichTextFX doesn't support fxml so we need to initialize thoabout:startpagese components in code
+     * RichTextFX doesn't support fxml so we need to initialize those components in code
      * @param url not used
      * @param resourceBundle not used
      */
@@ -140,6 +137,15 @@ public class MainController implements Initializable {
         }
         spansBuilder.add(Collections.emptyList(), text.length() - lastCommentEnd);
         return spansBuilder.create();
+    }
+
+    /**
+     * closes the application
+     * @param event not used
+     */
+    @FXML
+    protected void closeApplication(ActionEvent event) {
+        Platform.exit();
     }
 
     /**

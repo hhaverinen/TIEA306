@@ -32,7 +32,8 @@
   -->
 
 <?import main.java.component.PojoComboBox?>
-<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.control.Label?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.controller.MainController">
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -65,15 +66,24 @@
          <top>
             <VBox prefHeight="60.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="600.0" spacing="5">
-                     <children>
-                        <Button mnemonicParsing="false" onAction="#connect" text="Connect" />
-                        <PojoComboBox fx:id="connectionsComboBox" onAction="#selectDatabaseConnection" prefWidth="100.0" />
-                        <TextField fx:id="databaseUrl" />
-                        <TextField fx:id="databaseUser" />
-                        <PasswordField fx:id="databasePassword" />
-                     </children>
-                  </HBox>
+                   <HBox alignment="CENTER" prefHeight="30" spacing="5">
+                       <HBox alignment="CENTER_LEFT" prefHeight="30" prefWidth="400" spacing="5">
+                           <children>
+                               <Label text="Active connection" prefHeight="Infinity"/>
+                               <ComboBox prefWidth="100" fx:id="activeConnectionsComboBox"/>
+                           </children>
+                       </HBox>
+                       <Region HBox.hgrow="ALWAYS" />
+                      <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="800.0" spacing="5" >
+                         <children>
+                            <Button mnemonicParsing="false" onAction="#connect" text="Connect" />
+                            <PojoComboBox fx:id="connectionsComboBox" onAction="#selectDatabaseConnection" prefWidth="100.0" />
+                            <TextField fx:id="databaseUrl" />
+                            <TextField fx:id="databaseUser" />
+                            <PasswordField fx:id="databasePassword" />
+                         </children>
+                      </HBox>
+                   </HBox>
                   <HBox prefHeight="30.0" prefWidth="600.0" spacing="5">
                       <children>
                           <Button mnemonicParsing="false" onAction="#invokeRunQuery" text="Run query" />
@@ -91,17 +101,20 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="true" text="_File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+                <MenuItem mnemonicParsing="false" onAction="#openSqlFile" text="Open" />
+                <MenuItem mnemonicParsing="false" onAction="#saveSqlSheet" text="Save" />
+                <MenuItem mnemonicParsing="false" onAction="#exportResultsToFile" text="Export" />
+              <MenuItem mnemonicParsing="false" onAction="#closeApplication" text="Close" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Aliases">
+          <Menu mnemonicParsing="true" text="_Aliases">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#openAliasWindow" text="Manage aliases" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu mnemonicParsing="true" text="_Help">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />
             </items>
