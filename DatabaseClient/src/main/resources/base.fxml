@@ -70,7 +70,7 @@
                        <HBox alignment="CENTER_LEFT" prefHeight="30" prefWidth="400" spacing="5">
                            <children>
                                <Label text="Active connection" prefHeight="Infinity"/>
-                               <ComboBox prefWidth="100" fx:id="activeConnectionsComboBox"/>
+                               <PojoComboBox prefWidth="100" fx:id="activeConnectionsComboBox"/>
                            </children>
                        </HBox>
                        <Region HBox.hgrow="ALWAYS" />

@@ -42,6 +42,7 @@ import main.java.helper.FileHelper;
 import main.java.model.ConnectionPOJO;
 import main.java.helper.DatabaseHelper;
 import main.java.model.Context;
+import main.java.model.DatabaseConnection;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.StyleSpans;
@@ -71,13 +72,11 @@ public class MainController implements Initializable {
     @FXML
     private AnchorPane metadataPane;
     @FXML
-    private PojoComboBox connectionsComboBox;
+    private PojoComboBox connectionsComboBox, activeConnectionsComboBox;
     @FXML
     private ComboBox<String> queryHistoryComboBox;
     @FXML
     private SplitPane mainArea;
-    @FXML
-    private ComboBox activeConnectionsComboBox;
 
     private DatabaseHelper currentDatabaseConnection;
     private CodeArea queryArea;
@@ -98,7 +97,9 @@ public class MainController implements Initializable {
 
         // save reference of selected active connection
         activeConnectionsComboBox.valueProperty().addListener((observableValue, oldValue, newValue) -> {
-            currentDatabaseConnection = (DatabaseHelper) observableValue;
+            DatabaseConnection databaseConnection = (DatabaseConnection) activeConnectionsComboBox.getSelectionModel().getSelectedItem();
+            currentDatabaseConnection = databaseConnection.getDatabaseHelper();
+
         });
 
         // append query to queryArea when query is selected from queryHistory comboBox
@@ -346,9 +347,11 @@ public class MainController implements Initializable {
 
         if(!url.isEmpty() && !user.isEmpty() && !password.isEmpty()) {
             try {
-                currentDatabaseConnection = new DatabaseHelper(url, user, password);
-                activeConnectionsComboBox.getItems().add(currentDatabaseConnection);
-                activeConnectionsComboBox.getSelectionModel().select(currentDatabaseConnection);
+                DatabaseHelper databaseHelper = new DatabaseHelper(url, user, password);
+                // use url as name of the DatabaseConnection object
+                DatabaseConnection databaseConnection = new DatabaseConnection(url, databaseHelper);
+                activeConnectionsComboBox.getItems().add(databaseConnection);
+                activeConnectionsComboBox.getSelectionModel().select(databaseConnection);
                 writeLog("Successfully connected to " + url);
                 buildDatabaseMetaData();
             } catch (Exception e) {

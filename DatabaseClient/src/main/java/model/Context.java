@@ -21,7 +21,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import main.java.helper.DatabaseHelper;
 import main.java.helper.FileHelper;
 
 import java.util.List;
@@ -36,7 +35,7 @@ public class Context {
     private final static Context instance = new Context();
     private ObjectProperty<ObservableList<ConnectionPOJO>> connections = new SimpleObjectProperty<>();
     private ObjectProperty<ObservableList<DriverPOJO>> drivers = new SimpleObjectProperty<>();
-    private ObjectProperty<ObservableList<DatabaseHelper>> activeConnections = new SimpleObjectProperty<>();
+    private ObjectProperty<ObservableList<DatabaseConnection>> activeConnections = new SimpleObjectProperty<>();
 
     private Context() {
         connections.set(FXCollections.observableArrayList());
@@ -66,5 +65,5 @@ public class Context {
 
     public ObjectProperty<ObservableList<DriverPOJO>> getDrivers() { return drivers; }
 
-    public ObjectProperty<ObservableList<DatabaseHelper>> getActiveConnections() { return activeConnections; }
+    public ObjectProperty<ObservableList<DatabaseConnection>> getActiveConnections() { return activeConnections; }
 }
