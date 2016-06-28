@@ -61,6 +61,7 @@ import java.util.regex.Pattern;
  * Created by Henri on 4.3.2016.
  *
  * Handles user inputs in main window
+ * Also does some drawing
  */
 public class MainController implements Initializable {
     @FXML
@@ -407,20 +408,22 @@ public class MainController implements Initializable {
             AnchorPane.setBottomAnchor(vBox,0.0);
             AnchorPane.setLeftAnchor(vBox,0.0);
             AnchorPane.setRightAnchor(vBox,0.0);
+            TreeItem<String> rootNode = new TreeItem<>("Tables"); //TODO: get db name or something?
             while (tables.next()) {
                 String tableName = tables.getString(3);
                 TreeItem<String> table = new TreeItem<>(tableName);
 
                 ResultSet columns = databaseMetaData.getColumns(null,null,tableName,null);
                 while(columns.next()){
-                    String columnData = columns.getString(4) + " - " + JDBCType.valueOf(columns.getInt(5)).getName();
+                    String columnData = columns.getString(4) + " - " + JDBCType.valueOf(columns.getInt(5)).getName() + " (" + columns.getString(7) + ")";
                     TreeItem<String> column = new TreeItem<>(columnData);
                     table.getChildren().add(column);
                 }
 
-                TreeView<String> treeView = new TreeView<>(table);
-                vBox.getChildren().add(treeView);
+                rootNode.getChildren().add(table);
             }
+            TreeView<String> treeView = new TreeView<>(rootNode);
+            vBox.getChildren().add(treeView);
             metadataPane.getChildren().clear();
             metadataPane.getChildren().add(vBox);
         } catch (SQLException e){

@@ -6,7 +6,6 @@ Features:
 -Generate sql clause that copies resultset/table/whole db?
 -Multiline support (works almost?)
 -Support for several sql work sheets?
--Support for several connections (tabbed or dropbox selection which db is queried)?
 -Possibility to select, copy, do stuff with metadata panel
 -Possibility to execute multiple queries once (seperated with ;?)
 -Possibility to select seperator, commentmark etc from settings
@@ -15,7 +14,6 @@ Features:
 
 UI stuff:
 -Nicer looking metadata panel and UI fix (doesn't stretch to parent container)
--Scrollbars don't move correctly when resizing window
 -Nice images and tooltip texts for buttons?
 -Overall styles
 
