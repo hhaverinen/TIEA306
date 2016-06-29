@@ -9,16 +9,10 @@ Features:
 -Possibility to select, copy, do stuff with metadata panel
 -Possibility to execute multiple queries once (seperated with ;?)
 -Possibility to select seperator, commentmark etc from settings
--Support for different databases (mysql works. postgresql queries work but metadata doesn't)
+-Support for different databases?
 -Auto completion (default: ctrl + space) for sql keywords and tables/fields after connected to database
 
 UI stuff:
 -Nicer looking metadata panel and UI fix (doesn't stretch to parent container)
 -Nice images and tooltip texts for buttons?
 -Overall styles
-
-Something else:
--Disable connection button when connection is established?
-
-
-
