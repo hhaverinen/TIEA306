@@ -14,7 +14,7 @@
  * copies or substantial portions of the Software.
  */
 
-package main.java.controller;
+package controller;
 
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
@@ -22,11 +22,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
-import main.java.component.PojoComboBox;
-import main.java.helper.FileHelper;
-import main.java.model.ConnectionPOJO;
-import main.java.model.Context;
-import main.java.model.DriverPOJO;
+import component.PojoComboBox;
+import helper.FileHelper;
+import model.ConnectionPOJO;
+import model.Context;
+import model.DriverPOJO;
 
 import java.net.URL;
 import java.util.List;

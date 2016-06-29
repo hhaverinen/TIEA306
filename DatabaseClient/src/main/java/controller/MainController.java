@@ -14,7 +14,7 @@
  * copies or substantial portions of the Software.
  */
 
-package main.java.controller;
+package controller;
 
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -37,12 +37,12 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import main.java.component.PojoComboBox;
-import main.java.helper.FileHelper;
-import main.java.model.ConnectionPOJO;
-import main.java.helper.DatabaseHelper;
-import main.java.model.Context;
-import main.java.model.DatabaseConnection;
+import component.PojoComboBox;
+import helper.FileHelper;
+import model.ConnectionPOJO;
+import helper.DatabaseHelper;
+import model.Context;
+import model.DatabaseConnection;
 import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.StyleSpans;
@@ -374,9 +374,9 @@ public class MainController implements Initializable {
     @FXML
     protected void openAliasWindow(ActionEvent event) {
         try {
-            Parent window = FXMLLoader.load(getClass().getResource("/main/resources/alias_window.fxml"));
+            Parent window = FXMLLoader.load(getClass().getResource("/alias_window.fxml"));
             Scene scene = new Scene(window, 400, 200);
-            scene.getStylesheets().add("/main/resources/styles.css");
+            scene.getStylesheets().add("/styles.css");
             Stage windowStage = new Stage();
 
             windowStage.initModality(Modality.APPLICATION_MODAL);

@@ -1,9 +1,13 @@
 # output folder
-DatabaseClient/out/production/*
+DatabaseClient/out
 
 # workspace settings
 DatabaseClient/.idea/copyright/*
 DatabaseClient/.idea/workspace.xml
+DatabaseClient/dependency-reduced-pom.xml
+
+# Maven target
+DatabaseClient/target
 
 *.class
 

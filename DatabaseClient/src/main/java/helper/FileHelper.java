@@ -14,7 +14,7 @@
  * copies or substantial portions of the Software.
  */
 
-package main.java.helper;
+package helper;
 
 import com.google.gson.Gson;
 

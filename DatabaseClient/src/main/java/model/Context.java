@@ -14,14 +14,14 @@
  * copies or substantial portions of the Software.
  */
 
-package main.java.model;
+package model;
 
 import com.google.gson.reflect.TypeToken;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import main.java.helper.FileHelper;
+import helper.FileHelper;
 
 import java.util.List;
 

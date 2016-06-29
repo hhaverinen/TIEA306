@@ -15,15 +15,15 @@
  * copies or substantial portions of the Software.
  */
 
-package main.java;
+package application;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import main.java.controller.MainController;
-import main.java.model.Context;
+import controller.MainController;
+import model.Context;
 
 
 /**
@@ -43,11 +43,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResource("/main/resources/base.fxml").openStream());
+        Parent root = loader.load(getClass().getResource("/base.fxml").openStream());
         mainController = loader.getController();
         primaryStage.setTitle("DatabaseClient");
         Scene scene = new Scene(root, 1200, 800);
-        scene.getStylesheets().add("/main/resources/styles.css");
+        scene.getStylesheets().add("/styles.css");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

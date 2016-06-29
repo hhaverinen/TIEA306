@@ -14,13 +14,13 @@
  * copies or substantial portions of the Software.
  */
 
-package main.java.component;
+package component;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
-import main.java.model.PojoInterface;
+import model.PojoInterface;
 
 /**
  * Created by Henri on 24.4.2016.

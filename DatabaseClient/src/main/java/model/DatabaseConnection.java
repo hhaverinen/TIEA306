@@ -14,9 +14,9 @@
  * copies or substantial portions of the Software.
  */
 
-package main.java.model;
+package model;
 
-import main.java.helper.DatabaseHelper;
+import helper.DatabaseHelper;
 
 /**
  * Created by Henri on 28.6.2016.
