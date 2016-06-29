@@ -228,6 +228,7 @@ public class MainController implements Initializable {
     protected void openSqlFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose sql file to open");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SQL file", "*.sql"));
         Stage stage = new Stage();
         File file = fileChooser.showOpenDialog(stage);
         if (file != null) {
@@ -250,6 +251,7 @@ public class MainController implements Initializable {
     protected void saveSqlSheet(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose file where to save");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SQL file", "*.sql"));
         Stage stage = new Stage();
         File file = fileChooser.showSaveDialog(stage);
         if (file != null) {
@@ -270,6 +272,7 @@ public class MainController implements Initializable {
     @FXML
     protected void exportResultsToFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV file", "*.csv"));
         fileChooser.setTitle("Choose file where to save");
         Stage stage = new Stage();
         File file = fileChooser.showSaveDialog(stage);
