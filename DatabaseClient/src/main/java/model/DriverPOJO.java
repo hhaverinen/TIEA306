@@ -20,23 +20,14 @@ package model;
  * Created by Henri on 5.4.2016.
  *
  * Model for driver
+ * (currently serves no purpose, just base for future use)
  */
 public class DriverPOJO implements PojoInterface {
 
     private String name;
-    private String pathToJar;
 
-    public DriverPOJO(String name, String pathToJar) {
+    public DriverPOJO(String name) {
         this.name = name;
-        this.pathToJar = pathToJar;
-    }
-
-    public String getPathToJar() {
-        return pathToJar;
-    }
-
-    public void setPathToJar(String pathToJar) {
-        this.pathToJar = pathToJar;
     }
 
     public String getName() {
@@ -56,7 +47,7 @@ public class DriverPOJO implements PojoInterface {
     public boolean equals(Object obj) {
         DriverPOJO pojo = (DriverPOJO)obj;
         if (pojo != null)
-            return (pojo.getName().equals(name) && pojo.getPathToJar().equals(pathToJar)) ? true : false;
+            return pojo.getName().equals(name);
         return false;
     }
 }
