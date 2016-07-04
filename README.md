@@ -6,6 +6,7 @@ ja suorittaa perus sql-kyselyitä.
 Käyttääksesi ohjelmaa tarvitset java version 1.8. Jos haluat itse kääntää ohjelman, suosittelen käytettäväksi mavenia.
 
 ## Käyttö
-1. Kloonaa repo `git clone https://github.com/hhaverinen/TIEA306.git`.
-2. Pakkaa mavenilla `maven package`.
-3. Käynnistä jar `java -jar DatabaseClient-1.0.jar`.
+1. Kloonaa repo `git clone https://github.com/hhaverinen/TIEA306.git`
+2. Mene hakemistoon TIEA306/DatabaseClient
+3. Pakkaa mavenilla `mvn package`
+4. Käynnistä jar `java -jar target/DatabaseClient-1.0.jar`

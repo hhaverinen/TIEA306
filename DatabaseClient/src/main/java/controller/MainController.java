@@ -16,6 +16,7 @@
 
 package controller;
 
+import application.Main;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
@@ -33,6 +34,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -425,6 +428,23 @@ public class MainController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * opens about window
+     * @param event not used
+     */
+    @FXML
+    protected void openAboutWindow(ActionEvent event) {
+        String url = Main.class.getResource("/about.html").toExternalForm();
+        WebView browser = new WebView();
+        WebEngine engine = browser.getEngine();
+        engine.load(url);
+
+        Stage stage = new Stage();
+        stage.setScene(new Scene(browser));
+        stage.setTitle("Instructions");
+        stage.show();
     }
 
     /**
