@@ -32,7 +32,13 @@ public class DatabaseHelper {
     private final int socketTimeout = 10000;
 
     private String url;
+    private String user;
+    private String password;
 
+    /**
+     * get url for showing it in comboBox
+     * @return url of the connection
+     */
     public String getUrl() {
         return url;
     }
@@ -45,9 +51,18 @@ public class DatabaseHelper {
      * @throws Exception
      */
     public DatabaseHelper(String url, String user, String password) throws Exception {
-        // store url for showing in comboBox
         this.url = url;
+        this.user = user;
+        this.password = password;
         //Class.forName("com.mysql.jdbc.Driver").newInstance(); // not needed?
+        getConnection();
+    }
+
+    /**
+     * establish connection to database
+     * @throws Exception throws
+     */
+    private void getConnection() throws SQLException {
         connection = DriverManager.getConnection(url + "?" + getTimeoutParams(connectionTimeout, socketTimeout), user, password);
     }
 
@@ -91,6 +106,20 @@ public class DatabaseHelper {
         try {
             if (statement != null) statement.close();
             if (connection != null) connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * closes old connection and makes a new one to database
+     */
+    public void reconnect() {
+        try {
+            // close old connection
+            closeConnection();
+            // establish a new connection
+            getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }

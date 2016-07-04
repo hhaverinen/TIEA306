@@ -98,8 +98,10 @@ public class MainController implements Initializable {
 
         // save reference of selected active connection
         activeConnectionsComboBox.valueProperty().addListener((observableValue, oldValue, newValue) -> {
-            DatabaseConnection databaseConnection = (DatabaseConnection) activeConnectionsComboBox.getSelectionModel().getSelectedItem();
-            currentDatabaseConnection = databaseConnection.getDatabaseHelper();
+            if (newValue != null) {
+                DatabaseConnection databaseConnection = (DatabaseConnection) newValue;
+                currentDatabaseConnection = databaseConnection.getDatabaseHelper();
+            }
 
         });
 
@@ -185,38 +187,44 @@ public class MainController implements Initializable {
      * @param query sql query to be executed
      */
     protected void runQuery(String query) {
-        ResultSet resultSet = null;
-        try {
-            int affectedRows = 0;
-            String queryType = query.split(" ")[0];
-            if (queryType.equalsIgnoreCase("select")) {
-                resultSet = currentDatabaseConnection.executeQuery(query);
-            // is this check really needed?
-            } else if (queryType.equalsIgnoreCase("insert") || queryType.equalsIgnoreCase("update") || queryType.equalsIgnoreCase("delete") || queryType.equalsIgnoreCase("alter")){
-                affectedRows = currentDatabaseConnection.executeUpdate(query);
-            } else {
-                writeLog("Query type %s is not supported. Use select, insert, update or delete.", queryType);
-                return;
-            }
-            if (resultSet != null) {
-                buildTableData(resultSet);
-            } else {
-                writeLog("Query completed successfully. %s rows affected.", affectedRows);
-            }
-            queryHistoryComboBox.getItems().add(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (e.getMessage() != null) {
-                writeLog(e.getMessage());
-            } else { writeLog("An error happened"); }
-        } finally {
+        if (currentDatabaseConnection != null) {
+            ResultSet resultSet = null;
             try {
-                if (resultSet != null) resultSet.close();
-            } catch (SQLException e) {
+                int affectedRows = 0;
+                String queryType = query.split(" ")[0];
+                if (queryType.equalsIgnoreCase("select")) {
+                    resultSet = currentDatabaseConnection.executeQuery(query);
+                    // is this check really needed?
+                } else if (queryType.equalsIgnoreCase("insert") || queryType.equalsIgnoreCase("update") || queryType.equalsIgnoreCase("delete") || queryType.equalsIgnoreCase("alter")) {
+                    affectedRows = currentDatabaseConnection.executeUpdate(query);
+                } else {
+                    writeLog("Query type %s is not supported. Use select, insert, update or delete.", queryType);
+                    return;
+                }
+                if (resultSet != null) {
+                    buildTableData(resultSet);
+                } else {
+                    writeLog("Query completed successfully. %s rows affected.", affectedRows);
+                }
+                queryHistoryComboBox.getItems().add(query);
+            } catch (Exception e) {
                 e.printStackTrace();
-            }
-            currentDatabaseConnection.closeStatement();
+                if (e.getMessage() != null) {
+                    writeLog(e.getMessage());
+                } else {
+                    writeLog("An unexpected error happened");
+                }
+            } finally {
+                try {
+                    if (resultSet != null) resultSet.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                currentDatabaseConnection.closeStatement();
 
+            }
+        } else {
+            writeLog("Establish a connection before running a query");
         }
     }
 
@@ -356,7 +364,7 @@ public class MainController implements Initializable {
                 DatabaseConnection databaseConnection = new DatabaseConnection(url, databaseHelper);
                 activeConnectionsComboBox.getItems().add(databaseConnection);
                 activeConnectionsComboBox.getSelectionModel().select(databaseConnection);
-                writeLog("Successfully connected to " + url);
+                writeLog("Successfully connected to %s", url);
                 buildDatabaseMetaData();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -364,6 +372,38 @@ public class MainController implements Initializable {
             }
         } else {
             writeLog("Please fill all fields");
+        }
+    }
+
+    /**
+     * disconnects selected active connection and removes it from the "active connections" list
+     * @param event not used
+     */
+    @FXML
+    protected void disconnect(ActionEvent event) {
+        if (currentDatabaseConnection != null) {
+            currentDatabaseConnection.closeConnection();
+            currentDatabaseConnection = null;
+            Context.getInstance().getActiveConnections().get().remove(activeConnectionsComboBox.getSelectionModel().getSelectedItem());
+            writeLog("Successfully disconnected from %s", currentDatabaseConnection.getUrl());
+        } else {
+            writeLog("No selected active connection");
+        }
+    }
+
+    /**
+     * reconnects selected connection that has once been established (can be found in "active connections" list)
+     * but is disconnected by other means than from user action (e.g. server timeout)
+     * @param event not used
+     */
+    @FXML
+    protected void reconnect(ActionEvent event) {
+        if (currentDatabaseConnection != null) {
+            currentDatabaseConnection.reconnect();
+            writeLog("Successfully reconnected to %s", currentDatabaseConnection.getUrl());
+            buildDatabaseMetaData();
+        } else {
+            writeLog("No selected active connection");
         }
     }
 

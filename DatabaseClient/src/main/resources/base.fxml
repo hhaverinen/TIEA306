@@ -71,6 +71,8 @@
                            <children>
                                <Label text="Active connection" prefHeight="Infinity"/>
                                <PojoComboBox prefWidth="100" fx:id="activeConnectionsComboBox"/>
+                               <Button mnemonicParsing="false" onAction="#disconnect" text="Disconnect" />
+                               <Button mnemonicParsing="false" onAction="#reconnect" text="Reconnect" />
                            </children>
                        </HBox>
                        <Region HBox.hgrow="ALWAYS" />
