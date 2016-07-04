@@ -104,6 +104,7 @@ public class MainController implements Initializable {
             if (newValue != null) {
                 DatabaseConnection databaseConnection = (DatabaseConnection) newValue;
                 currentDatabaseConnection = databaseConnection.getDatabaseHelper();
+                buildDatabaseMetaData();
             }
 
         });

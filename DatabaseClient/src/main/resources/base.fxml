@@ -80,9 +80,9 @@
                          <children>
                             <Button mnemonicParsing="false" onAction="#connect" text="Connect" />
                             <PojoComboBox fx:id="connectionsComboBox" onAction="#selectDatabaseConnection" prefWidth="100.0" />
-                            <TextField fx:id="databaseUrl" />
-                            <TextField fx:id="databaseUser" />
-                            <PasswordField fx:id="databasePassword" />
+                            <TextField fx:id="databaseUrl" promptText="Url"/>
+                            <TextField fx:id="databaseUser" promptText="User"/>
+                            <PasswordField fx:id="databasePassword" promptText="Password"/>
                          </children>
                       </HBox>
                    </HBox>

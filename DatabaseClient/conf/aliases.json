@@ -1,1 +1,1 @@
-[{"name":"MOCK_DB","driver":{"name":"MySQL driver"},"username":"root","password":"passw0rd","databaseUrl":"jdbc:mysql://localhost/mock_db"}]
+[{"name":"MOCK_DB","driver":{"name":"MySQL driver"},"username":"root","password":"passw0rd","databaseUrl":"jdbc:mysql://localhost/mock_db"},{"name":"TEST_DB","driver":{"name":"MySQL driver"},"username":"root","password":"passw0rd","databaseUrl":"jdbc:mysql://localhost/test_db"}]

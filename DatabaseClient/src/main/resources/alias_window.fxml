@@ -28,15 +28,15 @@
         </rowConstraints>
          <children>
              <Label text="Alias name" />
-             <TextField fx:id="aliasNameField" GridPane.columnIndex="1" />
+             <TextField fx:id="aliasNameField" GridPane.columnIndex="1" promptText="Alias"/>
             <PojoComboBox fx:id="driverBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Driver" GridPane.rowIndex="1" />
-            <TextField fx:id="urlField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="userField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="urlField" GridPane.columnIndex="1" GridPane.rowIndex="2" promptText="jdbc:mysql://localhost/example_db"/>
+            <TextField fx:id="userField" GridPane.columnIndex="1" GridPane.rowIndex="3" promptText="root"/>
             <Label text="Database URL" GridPane.rowIndex="2" />
             <Label text="Database user" GridPane.rowIndex="3" />
             <Label text="Password" GridPane.rowIndex="4" />
-            <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="4" promptText="password"/>
          </children>
       </GridPane>
    </center>
