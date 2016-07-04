@@ -2,9 +2,118 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Instructions</title>
+    <title>Instructions for DatabaseClient</title>
 </head>
+<style>
+    ol > li {font-weight: bold;}
+</style>
 <body>
-<h1>Testi tekstiä</h1>
+<h1>DatabaseClient</h1>
+<ul>
+    <li><a href="#1.0">About me and this program</a></li>
+        <ul>
+            <li><a href="#1.1">DatabaseClient</a></li>
+        </ul>
+    <li><a href="#2.0">Instructions for users</a></li>
+        <ul>
+            <li><a href="#2.1">Main window</a></li>
+            <li><a href="#2.2">Alias window</a></li>
+        </ul>
+    <li><a href="#3.0">Known issues</a></li>
+    <li><a href="#4.0">Instructions for developers and maintainers</a></li>
+
+</ul>
+
+<h2 id="1.0">About this program</h2>
+<p>Here is some short and basic info about program</p>
+
+<h3 id="1.1">DatabaseClient</h3>
+<p>
+    DatabaseClient is a simple JavaFX program, that with one can connect to MySQL databases, and make basic queries to it.
+    With basic queries I'm talking about following:
+    <ul>
+        <li>SELECT</li>
+        <li>INSERT</li>
+        <li>UPDATE</li>
+        <li>DELETE</li>
+    </ul>
+</p>
+<p>
+    This program also lets one to read and execute sql queries from files, as well as save ran queries from worksheet to file.
+    Also query results to csv file is possible.
+</p>
+<p>
+    Program offers a possibility to manage database aliases too. One can save connection information (url, user, password) via program.
+    Those connections are then loaded on startup, so you can connect to often used databases more easily, and you don't need to remember
+    all those connection information from memory. <strong>Word of caution though, passwords are currently saved as clear text, so keep this in mind
+    when saving aliases!</strong>
+</p>
+
+<h2 id="2.0">Instructions for users</h2>
+<p>Here you can find some instructions how to use this program.</p>
+
+<h3 id="2.1">Main window</h3>
+<img src="mainwindow.png" width="100%" />
+<ol>
+    <li>Main menu</li>
+    <p>Under File are found same commands as in the section number 3. Under aliases one can open window for managing aliases, and under about one can find this instruction.</p>
+    <li>Controls for active connections</li>
+    <p>Dropdown contains active connections. User can select which database is queries by selecting active connection from that dropdown. It is also possible to disconnect and reconnect those connections.</p>
+    <li>Controls for queries</li>
+    <p>Run query button runs query from same line where the caret is, or if there is selected text in query area, then program runs it. For running query there is also hotkey <strong>CTRL + ENTER</strong>.</p>
+    <p>One can also open sql file, which loads queries from file to query area. It is possible to run queries straight from the file.
+        Saving sql clauses to file saves all queries from query area to a file. User can also export results of current query to csv file.</p>
+    <li>Controls for connecting to database</li>
+    <p>From here one connects to database. Selecting an alias from dropdown fills fields with saved alias information.</p>
+    <li>History of made queries</li>
+    <p>This dropdown keeps history of made queries. Selecting query from here appends it to end of the query area.</p>
+    <li>Query are</li>
+    <p>Here one writes her queries. Normally it runs query from line where the caret is, but if there is selected text, it tries to run it instead. <strong>NB: See <a href="#3.0">known issues</a>, as running a selection sql clause might have some problems</strong></p>
+    <p>Query area also support one line comments, comment mark is --.</p>
+    <li>Database metadata panel</li>
+    <p>Upon connection / changing active connection table data from connected database is loaded here.</p>
+    <li>Query results</li>
+    <p>Here comes the results of queries. Results get tabbed as queries are made. It is possible to copy values from cells with <strong>CTRL + C</strong>.</p>
+    <li>Log</li>
+    <p>Program will write log here, indicating successful and erroneous operations.</p>
+</ol>
+
+<h3 id="2.2">Alias window</h3>
+<img src="aliaswindow.png" width="100%" />
+<ol>
+    <li>Alias selection</li>
+    <p>From here user can select already saved aliases. Choosing alias from here fills fields with information of that alias.</p>
+    <li>Name of the alias</li>
+    <p>This is only used for displaying in different dropdown boxes.</p>
+    <li>Driver for database (currently supports only MySQL databases)</li>
+    <p>Currently serves no purpose, as only MySQL databases are supported. However it is mandatory to select alias.
+        <strong>NB: One shouldn't remove drivers.json file under conf directory, because program still uses it.
+            Removing file can result to a situation, where one cannot add new aliases because driver is required, but program can't find a single driver.</strong></p>
+    <li>Url of the database</li>
+    <p>This is the url of the database where one want's to connect. Urls are like this: <stong>jdbc:mysql://localhost/example_db</stong>, where the localhost is the host machine (e.h. IP), and example_db is name of the database.</p>
+    <li>User of the database</li>
+    <p>User that one want's to connect to database.</p>
+    <li>Password for the user</li>
+    <p>Password for the user.</p>
+    <li>Controls for managing aliases</li>
+    <p>Here one can add new alias, modify selected alias, or delete selected alias. Popup confirmation is shown when trying to modify or delete alias.</p>
+</ol>
+<h2 id="3.0">Known issues</h2>
+<ul>
+    <li>Multiline/selection support</li>
+    <p>There might be problems when running selection queries that span multiple lines. It seems that you need to have at least two words in the first line (e.g SELECT *). Not sure about this though.</p>
+    <li>Driver file (drivers.json)</li>
+    <p>Originally I planned to support more than just one database. However I ran to some difficulties, and I haven't yet implement more than MySQL support. Driver selection in alias window is basically pointless,
+    but you still shouldn't remove drivers.json, because program "reads" info about drivers from that file. If program can't read drivers, you also can't choose driver and alias window won't let you save that alias.
+    I don't fix that driver check, because this way I might implement support for more than just one database someday. ;)</p>
+    <li>Resizing problems</li>
+    <p>When resizing window to very very small, components might scale somewhat oddly. Maybe, I'm not sure what's odd!</p>
+    <li>Alias dropdown rendering after modifying alias in alias window</li>
+    <p>When renaming alias (modify), the name won't render to dropdown properly.
+        When re-selecting modified alias (select another and then the modified again), name will show properly in cell, but still not in the dropdown.
+        Closing and opening alias window fixes this problem.</p>
+</ul>
+<h2 id="4.0">Instructions for developers and maintainers</h2>
+<p>TODO!</p>
 </body>
 </html>

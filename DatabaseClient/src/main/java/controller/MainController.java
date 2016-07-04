@@ -199,7 +199,7 @@ public class MainController implements Initializable {
                 if (queryType.equalsIgnoreCase("select")) {
                     resultSet = currentDatabaseConnection.executeQuery(query);
                     // is this check really needed?
-                } else if (queryType.equalsIgnoreCase("insert") || queryType.equalsIgnoreCase("update") || queryType.equalsIgnoreCase("delete") || queryType.equalsIgnoreCase("alter")) {
+                } else if (queryType.equalsIgnoreCase("insert") || queryType.equalsIgnoreCase("update") || queryType.equalsIgnoreCase("delete")) {
                     affectedRows = currentDatabaseConnection.executeUpdate(query);
                 } else {
                     writeLog("Query type %s is not supported. Use select, insert, update or delete.", queryType);
@@ -422,6 +422,7 @@ public class MainController implements Initializable {
             Scene scene = new Scene(window, 400, 200);
             scene.getStylesheets().add("/styles.css");
             Stage windowStage = new Stage();
+            windowStage.setTitle("Manage aliases");
 
             windowStage.initModality(Modality.APPLICATION_MODAL);
             windowStage.setScene(scene);
