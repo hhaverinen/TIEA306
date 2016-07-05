@@ -21,6 +21,13 @@
         </ul>
     <li><a href="#3.0">Known issues</a></li>
     <li><a href="#4.0">Instructions for developers and maintainers</a></li>
+        <ul>
+            <li><a href="#4.1">Maintaining</a></li>
+            <li><a href="#4.2">Developing</a></li>
+            <ul>
+                <li><a href="#4.2.1">Architecture</a></li>
+            </ul>
+        </ul>
 
 </ul>
 
@@ -53,7 +60,7 @@
 <p>Here you can find some instructions how to use this program.</p>
 
 <h3 id="2.1">Main window</h3>
-<img src="mainwindow.png" width="100%" />
+<img src="mainwindow.png" />
 <ol>
     <li>Main menu</li>
     <p>Under File are found same commands as in the section number 3. Under aliases one can open window for managing aliases, and under about one can find this instruction.</p>
@@ -79,7 +86,7 @@
 </ol>
 
 <h3 id="2.2">Alias window</h3>
-<img src="aliaswindow.png" width="100%" />
+<img src="aliaswindow.png" />
 <ol>
     <li>Alias selection</li>
     <p>From here user can select already saved aliases. Choosing alias from here fills fields with information of that alias.</p>
@@ -98,6 +105,7 @@
     <li>Controls for managing aliases</li>
     <p>Here one can add new alias, modify selected alias, or delete selected alias. Popup confirmation is shown when trying to modify or delete alias.</p>
 </ol>
+
 <h2 id="3.0">Known issues</h2>
 <ul>
     <li>Multiline/selection support</li>
@@ -113,7 +121,30 @@
         When re-selecting modified alias (select another and then the modified again), name will show properly in cell, but still not in the dropdown.
         Closing and opening alias window fixes this problem.</p>
 </ul>
+
 <h2 id="4.0">Instructions for developers and maintainers</h2>
-<p>TODO!</p>
+<p>Here you can find some information and instructions for maintaining and developing this program.</p>
+
+<h3 id="4.1">Maintaining</h3>
+<p>
+    Program doesn't really need any maintaining, and there really isn't any tasks one could do (in maintaining purpose). Only thing is to assure that json files under /conf won't get erased.
+    Program works basically normally without those files, but as mentioned in <a href="#3.0">chapter 3.0</a>, one shouldn't remove drivers.json as it might cause problems when saving aliases.
+
+<h3 id="4.2">Developing</h3>
+<p>
+    You can develop this anyway you like to any direction you like. I have provided TODO.txt file that contains some tasks that could be done. File can be found at the same GitHub repository as this program.
+    I have done my best to follow good coding practices, commenting, project structuring etc, so that further development would be as easy and straight forward as possible.
+</p>
+
+<h4 id="4.2.1">Architecture</h4>
+<p>Under I have provided some sort of picture describing architecture of this program, for helping to get quick view of how things work together.</p>
+<img src="architecture.png" />
+<p>Both controller (Main and Alias) work with corresponding windows. They handle inputs and outputs of the GUI.</p>
+<p>Context is singleton that holds data about saved and active connections, as well as saved drivers. Context is used by controllers to get and put data from/to it.</p>
+<p>DatabaseConnection, DriverPOJO and ConnectionPOJO are mainly used for displaying purposes (in dropdown boxes mostly). DriverPOJO's and ConnectionPOJO's though are also saved to files (drivers.json and aliases.json respectively).
+    Context singleton holds all these objects.</p>
+<p>DatabaseHelper handles connections, queries and results to/from database. It offers simple functions for other classes (MainController) to use for doing database related tasks.</p>
+<p>FileHelper is class for writing and reading data to/from files. It got methods for reading/writing json files and transforming them to POJO representations, as well as reading/writing plain text.</p>
+
 </body>
 </html>
