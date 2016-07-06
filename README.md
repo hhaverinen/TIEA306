@@ -3,7 +3,7 @@ Kurssin harjoitustyö on mysql-tietokanta -asiakas. Asiakkaalla voi ottaa yhteyd
 ja suorittaa perus sql-kyselyitä.
 
 ## Käytön vaatimukset
-Käyttääksesi ohjelmaa tarvitset java version 1.8. Jos haluat itse kääntää ohjelman, suosittelen käytettäväksi mavenia.
+Käyttääksesi ohjelmaa tarvitset java version 1.8, sekä mavenin.
 
 ## Käyttö
 1. Kloonaa repo `git clone https://github.com/hhaverinen/TIEA306.git`
