@@ -2,9 +2,9 @@
 DatabaseClient/out
 
 # workspace settings
-DatabaseClient/.idea/copyright/*
-DatabaseClient/.idea/workspace.xml
 DatabaseClient/dependency-reduced-pom.xml
+DatabaseClient/.idea
+DatabaseClient/DatabaseClient.iml
 
 # Maven target
 DatabaseClient/target
