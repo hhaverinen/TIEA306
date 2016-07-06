@@ -71,7 +71,7 @@
     <p>One can also open sql file, which loads queries from file to query area. It is possible to run queries straight from the file.
         Saving sql clauses to file saves all queries from query area to a file. User can also export results of current query to csv file.</p>
     <li>Controls for connecting to database</li>
-    <p>From here one connects to database. Selecting an alias from dropdown fills fields with saved alias information.</p>
+    <p>From here one connects to database. Selecting an alias from dropdown fills fields with saved alias information. <strong>NB: program currently has 10 second connection timeout, so if program seems to freeze when connecting, it really doesn't. It waits 10 seconds and if connection couldn't be established, program writes notification to log.</strong></p>
     <li>History of made queries</li>
     <p>This dropdown keeps history of made queries. Selecting query from here appends it to end of the query area.</p>
     <li>Query are</li>
@@ -139,12 +139,12 @@
 <h4 id="4.2.1">Architecture</h4>
 <p>Under I have provided some sort of picture describing architecture of this program, for helping to get quick view of how things work together.</p>
 <img src="architecture.png" />
-<p>Both controller (Main and Alias) work with corresponding windows. They handle inputs and outputs of the GUI.</p>
-<p>Context is singleton that holds data about saved and active connections, as well as saved drivers. Context is used by controllers to get and put data from/to it.</p>
-<p>DatabaseConnection, DriverPOJO and ConnectionPOJO are mainly used for displaying purposes (in dropdown boxes mostly). DriverPOJO's and ConnectionPOJO's though are also saved to files (drivers.json and aliases.json respectively).
+<p>Both controller (Main and Alias) work with corresponding windows. They handle inputs and outputs of the GUI. They also get get data from Context and bind them to corresponding dropdown boxes.</p>
+<p>Context is singleton that holds data about saved and active connections, as well as saved drivers. Context is used by controllers to get and put data from/to it. It keeps all the data in SimpleObjectProperties that contains list of elements.</p>
+<p>DatabaseConnection, DriverPOJO and ConnectionPOJO are mainly used for displaying purposes (in dropdown boxes mostly). DriverPOJOs and ConnectionPOJOs are also saved to files though (drivers.json and aliases.json respectively).
     Context singleton holds all these objects.</p>
-<p>DatabaseHelper handles connections, queries and results to/from database. It offers simple functions for other classes (MainController) to use for doing database related tasks.</p>
-<p>FileHelper is class for writing and reading data to/from files. It got methods for reading/writing json files and transforming them to POJO representations, as well as reading/writing plain text.</p>
+<p>DatabaseHelper handles connections, queries and results to/from database. It offers simple functions for other classes (MainController basically) to use for doing database related tasks.</p>
+<p>FileHelper is class for writing and reading data to/from files. It has methods for reading/writing json files and transforming them to POJO representations, as well as reading/writing plain text.</p>
 
 </body>
 </html>
