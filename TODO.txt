@@ -1,6 +1,8 @@
 Fixes:
 -Alias-window's alias dropbox's selected item wont' render name properly after update
 (renders correcly after selecting other alias and then selecting the modified alias again)
+-On unix system (at least on my ubuntu) images won't show in about window, 
+ and sometimes dropdown boxes won't render straight down (have some offset)
 
 Features:
 -Generate sql clause that copies resultset/table/whole db?
