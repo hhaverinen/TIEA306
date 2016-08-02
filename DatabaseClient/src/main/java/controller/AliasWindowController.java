@@ -180,7 +180,8 @@ public class AliasWindowController implements Initializable {
     private boolean validateFields() {
         // do it like this, so that every field gets validated and assigned correct pseudoclass
         boolean isAliasOk = validateTextField(aliasNameField);
-        boolean isDriverOk = validateComboBox(driverBox);
+        boolean isDriverOk = true; // always true because currently there is no support for different drivers
+        // boolean isDriverOk = validateComboBox(driverBox);
         boolean isUrlOk = validateTextField(urlField);
         boolean isUserOk = validateTextField(userField);
         boolean isPasswordOk = validateTextField(passwordField);

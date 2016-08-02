@@ -93,9 +93,7 @@
     <li>Name of the alias</li>
     <p>This is only used for displaying in different dropdown boxes.</p>
     <li>Driver for database (currently supports only MySQL databases)</li>
-    <p>Currently serves no purpose, as only MySQL databases are supported. However it is mandatory to select alias.
-        <strong>NB: One shouldn't remove drivers.json file under conf directory, because program still uses it.
-            Removing file can result to a situation, where one cannot add new aliases because driver is required, but program can't find a single driver.</strong></p>
+    <p>Currently serves no purpose, as only MySQL databases are supported.</p>
     <li>Url of the database</li>
     <p>This is the url of the database where one want's to connect. Urls are like this: <stong>jdbc:mysql://localhost/example_db</stong>, where the localhost is the host machine (e.h. IP), and example_db is name of the database.</p>
     <li>User of the database</li>
@@ -110,10 +108,6 @@
 <ul>
     <li>Multiline/selection support</li>
     <p>There might be problems when running selection queries that span multiple lines. It seems that you need to have at least two words in the first line (e.g SELECT *). Not sure about this though.</p>
-    <li>Driver file (drivers.json)</li>
-    <p>Originally I planned to support more than just one database. However I ran to some difficulties, and I haven't yet implement more than MySQL support. Driver selection in alias window is basically pointless,
-    but you still shouldn't remove drivers.json, because program "reads" info about drivers from that file. If program can't read drivers, you also can't choose driver and alias window won't let you save that alias.
-    I don't fix that driver check, because this way I might implement support for more than just one database someday. ;)</p>
     <li>Resizing problems</li>
     <p>When resizing window to very very small, components might scale somewhat oddly. Maybe, I'm not sure what's odd!</p>
     <li>Alias dropdown rendering after modifying alias in alias window</li>
@@ -130,8 +124,8 @@
 
 <h3 id="4.1">Maintaining</h3>
 <p>
-    Program doesn't really need any maintaining, and there really isn't any tasks one could do (in maintaining purpose). Only thing is to assure that json files under /conf won't get erased.
-    Program works basically normally without those files, but as mentioned in <a href="#3.0">chapter 3.0</a>, one shouldn't remove drivers.json as it might cause problems when saving aliases.
+    Program doesn't really need any maintaining, and there really isn't any tasks one could do (in maintaining purpose). Only thing is to keep 'conf'-folder with jar because that's where
+    program will read saved aliases.
 
 <h3 id="4.2">Developing</h3>
 <p>

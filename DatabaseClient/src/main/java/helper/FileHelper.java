@@ -35,9 +35,16 @@ public class FileHelper {
      * @param fileName name of the file where to write
      */
     public void writeObjectsToJsonFile(List objects, String fileName) {
+        File dir = new File("conf");
         File file = new File(fileName);
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()))) {
 
+        // make 'conf' named folder for saving json files there
+        if(!dir.exists()) {
+            dir.mkdir();
+        }
+
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()))) {
+            // if file doesn't exist, make a new one
             if (!file.exists()) {
                 file.createNewFile();
             }
